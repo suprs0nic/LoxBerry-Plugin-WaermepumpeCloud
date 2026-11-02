@@ -1,0 +1,23 @@
+name: Offline PHP and package checks
+on: [push, pull_request]
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['7.4', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python tools/check.py
+      - run: python tools/package.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WaermepumpeCloud-onecta-test-php-${{ matrix.php }}
+          path: dist/*

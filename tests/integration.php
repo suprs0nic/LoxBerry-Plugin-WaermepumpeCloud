@@ -1,0 +1,112 @@
+<?php
+/** Exercise the real poll/writer/config code with HTTP/MQTT transport boundaries replaced.
+ * No network possible: the original HTTP implementation is removed before loading.
+ */
+$root = __DIR__ . '/.runtime/run-' . getmypid();
+foreach (array('/config/plugins', '/data/plugins', '/config/system', '/tmp') as $dir) { mkdir($root . $dir, 0700, true); }
+file_put_contents($root . '/config/system/general.json', '{}');
+putenv('LBHOMEDIR=' . $root); putenv('LBPPLUGINDIR=fixture');
+$http = array(); $mqtt = array(); $responseCode = 200; $throwMqtt = false;
+$fixture = json_decode(file_get_contents(__DIR__ . '/fixtures/altherma.json'), true)[0];
+function wp_http($method, $url, $headers = array(), $body = null, $timeout = 20) {
+    global $http, $responseCode, $fixture;
+    $http[] = array($method, $url, $body);
+    return array('code' => $method === 'PATCH' && $responseCode === 200 ? 204 : $responseCode,
+        'text' => json_encode($fixture), 'fehler' => '');
+}
+function wp_mqtt_senden($values) {
+    global $mqtt, $throwMqtt;
+    if ($throwMqtt && isset($values['zusatz/gueltig'])) { throw new RuntimeException('mock gateway failure'); }
+    $mqtt[] = $values; return true;
+}
+function wp_tmpdir() { global $root; return $root . '/tmp'; }
+$lib = realpath(__DIR__ . '/../webfrontend/htmlauth/wp_lib.php');
+$source = file_get_contents($lib);
+// Strip the HTTP function completely, so even an accidental call cannot reach a network.
+$begin = strpos($source, 'function wp_http(');
+$end = strpos($source, 'function wp_json(', $begin);
+$source = substr($source, 0, $begin) . substr($source, $end);
+$source = str_replace(array('function wp_mqtt_senden(', 'function wp_tmpdir('),
+    array('function unused_mqtt_transport(', 'function unused_tmpdir('), $source);
+$source = str_replace(array('__DIR__', '__FILE__'), array(var_export(dirname($lib), true), var_export($lib, true)), $source);
+eval('?>' . $source);
+$n = 0; $errors = 0;
+function check($condition, $label) {
+    global $n, $errors; $n++;
+    if (!$condition) { $errors++; fwrite(STDERR, "FAIL: $label\n"); }
+}
+try {
+    $cfg = array_merge(wp_vorgaben(), array('hersteller' => 'onecta', 'geraet' => 'fixture-gateway',
+        'aktionstoken' => str_repeat('a', 32), 'zuordnung' => 'SOLL=managementPoints[embeddedId=1].temperatureControl.value.operationModes.heating.setpoints.roomTemperature.value',
+        'befehle_mqtt_ein' => 1, 'befehle_mqtt_steuern' => 1,
+        'oc_zusatz_ein' => 1, 'oc_heiz_offset' => 1, 'oc_raum_soll' => 1, 'oc_heizmodus' => 1));
+    check(wp_config_write($cfg), 'save extended configuration');
+    check(wp_config(false)['oc_heiz_offset'] === 1 && wp_config(false)['zuordnung'] === $cfg['zuordnung'], 'settings round-trip preserves custom paths');
+    wp_geheim_write(array('client_id' => 'offline-client', 'client_secret' => 'offline-secret'));
+    wp_json_schreiben(wp_tmpdir() . '/token_onecta.json', array('token' => 'offline-token', 'bis' => time() + 3600));
+    check(wp_abrufen(true)[0] === 1, 'real poll succeeds with fixture transport');
+    check(count($http) === 1 && $http[0][0] === 'GET', 'exactly one cloud read, no extra requests');
+    check(count($mqtt) === 2 && $mqtt[1]['zusatz/heizmodus'] === 'heating' && $mqtt[1]['zusatz/gueltig'] === '1', 'regular poll publishes extension');
+    check(isset($mqtt[0]['AUSSEN'], $mqtt[0]['WW'], $mqtt[0]['EIN']) && $mqtt[0]['RUECKLAUF'] === wp_fehlwert('RUECKLAUF'), 'legacy MQTT still published with explicit missing return marker');
+    check(wp_stand()['oc_zusatz_geraet'] === 'fixture-gateway', 'cached capabilities belong to configured gateway');
+    $wp_cfg = wp_config(false);
+    ob_start(); include __DIR__ . '/../webfrontend/htmlauth/wp_onecta_extended_ui.php'; $html = ob_get_clean();
+    check(strpos($html, 'name="oc_heiz_offset" value="1" checked') !== false
+        && strpos($html, 'fixture-gateway') === false && strpos($html, 'zusatz/energie/heizung') !== false,
+        'real UI renders saved checkbox and data topics without gateway identifiers');
+    $saved = wp_stand(); $injected = $saved; $injected['roh']['deviceModel'] = '<script>alert(1)</script>';
+    wp_stand_write($injected);
+    ob_start(); include __DIR__ . '/../webfrontend/htmlauth/wp_onecta_extended_ui.php'; $html = ob_get_clean();
+    check(strpos($html, '<script>alert(1)</script>') === false && strpos($html, '&lt;script&gt;') !== false,
+        'UI escapes device-provided values');
+    wp_stand_write($saved);
+    $count = count($http); check(wp_abrufen(false)[1] === 'NOCH_FRISCH' && count($http) === $count, 'normal scheduling unchanged');
+    $mqtt = array(); $throwMqtt = true;
+    check(wp_abrufen(true)[0] === 1 && wp_stand()['ok'] === 1, 'optional MQTT exception cannot fail poll');
+    $throwMqtt = false; $responseCode = 503; $mqtt = array();
+    check(wp_abrufen(true)[0] === 0, 'HTTP failure preserved');
+    check($mqtt[1] === array('zusatz/gueltig' => '0') && !isset($mqtt[0]['AUSSEN']), 'failure publishes validity only, no stale extra/legacy readings');
+    $responseCode = 200; wp_abrufen(true);
+    $count = count($http);
+    $lock = fopen(wp_tmpdir() . '/abruf.lock', 'c'); flock($lock, LOCK_EX);
+    check(wp_oc_ext_command('heiz_offset', '2')[1] === 'ABRUF_AKTIV' && count($http) === $count, 'shared poll lock blocks commands');
+    flock($lock, LOCK_UN); fclose($lock);
+    wp_probe(true);
+    check(wp_oc_ext_command('heiz_offset', '2') === array(true, 'PROBE') && count($http) === $count, 'dry run cannot write');
+    wp_probe(false);
+    check(wp_oc_ext_command('heiz_offset', '2')[0], 'guarded command succeeds through existing writer (mock HTTP)');
+    $request = $http[count($http) - 1];
+    check($request[0] === 'PATCH' && $request[1] === 'https://api.onecta.daikineurope.com/v1/gateway-devices/fixture-gateway/management-points/1/characteristics/temperatureControl', 'actual numeric-id endpoint');
+    check(json_decode($request[2], true) === array('value' => 2, 'path' => '/operationModes/heating/setpoints/leavingWaterOffset'), 'actual PATCH body');
+    check(wp_stand()['oc_zusatz_zeit'] === 0, 'successful command invalidates snapshot');
+    check(wp_oc_ext_command('heizmodus', 'cooling')[1] === 'DATEN_VERALTET', 'must poll again before another command');
+    wp_abrufen(true);
+    check(wp_oc_ext_command('heizmodus', 'cooling')[1] === 'BEFEHLSBREMSE', 'global cooldown across command types');
+    wp_json_schreiben(wp_tmpdir() . '/oc_zusatz_befehl.json', array('zeit' => time() - 61));
+    $responseCode = 429;
+    check(wp_oc_ext_command('raum_soll', '22.5') === array(false, 'BUDGET_LEER'), '429 acknowledged without retry');
+    check(wp_oc_ext_command('heiz_offset', '3')[1] === 'BEFEHLSBREMSE', 'failed write still throttled');
+    $responseCode = 200;
+    wp_json_schreiben(wp_tmpdir() . '/oc_zusatz_befehl.json', array('zeit' => time() - 61));
+    wp_json_schreiben(wp_budget_datei('onecta'), array_fill(0, 200, time()));
+    $count = count($http);
+    check(wp_oc_ext_command('heiz_offset', '3') === array(false, 'BUDGET_LEER') && count($http) === $count, 'existing daily budget respected');
+    wp_json_schreiben(wp_budget_datei('onecta'), array());
+    $cfg['oc_zusatz_ein'] = 0; wp_config_write($cfg); $mqtt = array(); wp_abrufen(true);
+    check(count($mqtt) === 1 && !isset($mqtt[0]['zusatz/gueltig']), 'telemetry off emits only existing topics');
+    // Legacy configuration with no new keys upgrades without losing existing values.
+    foreach (wp_oc_ext_options() as $key => $label) { unset($cfg[$key]); }
+    wp_config_write($cfg); $read = wp_config(false);
+    check($read['oc_heiz_offset'] === 0 && $read['oc_zusatz_ein'] === 0 && $read['aktionstoken'] === $cfg['aktionstoken']
+        && $read['zuordnung'] === $cfg['zuordnung'], 'old config gains disabled defaults and keeps existing token/mapping');
+} finally {
+    // Only the test-created directory under tests/.runtime is eligible for cleanup.
+    $base = realpath(__DIR__ . '/.runtime'); $target = realpath($root);
+    if ($target && strpos($target, $base . DIRECTORY_SEPARATOR . 'run-') === 0) {
+        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($target, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST);
+        foreach ($files as $file) { $file->isDir() ? rmdir($file->getPathname()) : unlink($file->getPathname()); }
+        rmdir($target);
+    }
+}
+echo "$n integration checks, $errors failures\n";
+exit($errors ? 1 : 0);

@@ -1,5 +1,13 @@
 # LoxBerry-Plugin Wärmepumpe
 
+> **Fork-Testversion 0.9.40: Daikin Onecta erweitert.** Zusätzliche MQTT-Daten,
+> kWh-Rohreihen, Diagnose und separat freigebbare Steuerbefehle. Standardmäßig aus.
+> [Aktivierung, Upgrade und Loxone](docs/ONECTA.md) ·
+> [MQTT-Datenpunktliste](docs/MQTT-ONECTA.md) · [Prüfbericht](docs/TESTS.md) ·
+> [Changelog](CHANGELOG.md). Keine produktive Installation oder Live-Schreibtests ausgeführt.
+> Grundlage dieses Entwicklungsstands ist Fork-Version 0.9.39; historische Releasehinweise unten bleiben erhalten.
+
+
 Bindet moderne Wärmepumpen an den Miniserver an und übersetzt **SG-Ready-Zustände
 aus Loxone** dorthin — über die **herstellereigene Cloud** oder, bei Bosch und
 seinen Marken, über ein **Gateway im eigenen Netz**.
