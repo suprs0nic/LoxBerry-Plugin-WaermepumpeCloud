@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/wp_onecta_extended.php';
+require_once __DIR__ . '/wp_onecta_limits.php';
 /**
  * Waermepumpe Cloud fuer LoxBerry - Pfade, Konfiguration, Hersteller, Vorlage
  *
@@ -1156,6 +1157,12 @@ function wp_http($methode, $url, $kopf = array(), $koerper = null, $zeit = 20)
 
     if (function_exists('curl_init')) {
         $ch = curl_init($url);
+        $response_headers = array();
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, function ($ch, $line) use (&$response_headers) {
+            if (preg_match('#^HTTP/\S+\s+\d{3}#i', $line)) { $response_headers = array(); }
+            $response_headers = array_merge($response_headers, wp_oc_limit_headers(array($line)));
+            return strlen($line);
+        });
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $methode);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $kopf);
@@ -1167,7 +1174,7 @@ function wp_http($methode, $url, $kopf = array(), $koerper = null, $zeit = 20)
         $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $fehler = curl_error($ch);
         if (PHP_VERSION_ID < 80000) { curl_close($ch); }
-        return array('code' => $code, 'text' => (string) $text, 'fehler' => $fehler);
+        return array('code' => $code, 'text' => (string) $text, 'fehler' => $fehler, 'headers' => $response_headers);
     }
 
     /* follow_location AUSDRUECKLICH aus - der curl-Zweig oben setzt
@@ -1208,7 +1215,8 @@ function wp_http($methode, $url, $kopf = array(), $koerper = null, $zeit = 20)
         if (is_string($z) && preg_match('#^HTTP/\S+\s+(\d{3})#', $z, $m)) { $code = (int) $m[1]; }
     }
     return array('code' => $code, 'text' => (string) $text,
-                 'fehler' => $text === false ? 'Verbindung fehlgeschlagen' : '');
+                 'fehler' => $text === false ? 'Verbindung fehlgeschlagen' : '',
+                 'headers' => wp_oc_limit_headers($kopfzeilen));
 }
 
 function wp_json($antwort)
@@ -2171,12 +2179,12 @@ function wp_oc_anmeldeadresse()
 
 function wp_oc_geraete()
 {
+    if (wp_oc_limits_reason() !== '') { return array(); }
     $t = wp_oc_token();
     if ($t === '') { return array(); }
     if (!wp_budget_frei('onecta')) { return array(); }
     $info = wp_hersteller_info('onecta');
-    $a = wp_http('GET', $info['basis'] . '/v1/gateway-devices', array('Authorization: Bearer ' . $t), null, 25);
-    wp_budget_buchen('onecta');
+    $a = wp_oc_api('GET', $info['basis'] . '/v1/gateway-devices', array('Authorization: Bearer ' . $t), null, 25);
     /* Der Statuscode entscheidet, nicht das blosse Ankommen von Bytes.
      * wp_oc_lesen() macht das richtig vor; hier fehlte es. Gemessen: auf eine
      * Fehler-LISTE wie [{"code":401,"message":"no"}] entstand eine Geisterzeile
@@ -2202,6 +2210,8 @@ function wp_oc_geraete()
 
 function wp_oc_lesen($cfg)
 {
+    $limit_reason = wp_oc_limits_reason();
+    if ($limit_reason !== '') { return array('ok' => 0, 'fehler' => $limit_reason, 'roh' => null); }
     $t = wp_oc_token();
     if ($t === '') { return array('ok' => 0, 'fehler' => 'KEIN_TOKEN', 'roh' => null); }
     if ($cfg['geraet'] === '') { return array('ok' => 0, 'fehler' => 'KEIN_GERAET', 'roh' => null); }
@@ -2209,13 +2219,12 @@ function wp_oc_lesen($cfg)
         return array('ok' => 0, 'fehler' => 'BUDGET_LEER', 'roh' => null);
     }
     $info = wp_hersteller_info('onecta');
-    $a = wp_http('GET', $info['basis'] . '/v1/gateway-devices/' . rawurlencode($cfg['geraet']),
+    $a = wp_oc_api('GET', $info['basis'] . '/v1/gateway-devices/' . rawurlencode($cfg['geraet']),
         array('Authorization: Bearer ' . $t), null, 25);
-    wp_budget_buchen('onecta');
     $d = wp_json($a);
     if ($a['code'] === 429) { return array('ok' => 0, 'fehler' => 'BUDGET_LEER', 'roh' => null); }
     if ($a['code'] !== 200 || !is_array($d)) {
-        return array('ok' => 0, 'fehler' => 'HTTP_' . $a['code'], 'roh' => null);
+        return array('ok' => 0, 'fehler' => wp_oc_api_error($a), 'roh' => null);
     }
     return array('ok' => 1, 'fehler' => '', 'roh' => $d);
 }
@@ -2225,20 +2234,21 @@ function wp_oc_setzen($cfg, $punkt, $merkmal, $wert, $pfad = '')
 {
     // Probemodus: nicht schreiben, nur melden. Siehe wp_probe().
     if (wp_probe()) { return array(1, 'PROBE'); }
+    $limit_reason = wp_oc_limits_reason();
+    if ($limit_reason !== '') { return array(0, $limit_reason); }
     $t = wp_oc_token();
     if ($t === '') { return array(0, 'KEIN_TOKEN'); }
     if (!wp_budget_frei('onecta')) { return array(0, 'BUDGET_LEER'); }
     $info = wp_hersteller_info('onecta');
     $koerper = array('value' => $wert);
     if ($pfad !== '') { $koerper['path'] = $pfad; }
-    $a = wp_http('PATCH',
+    $a = wp_oc_api('PATCH',
         $info['basis'] . '/v1/gateway-devices/' . rawurlencode($cfg['geraet'])
         . '/management-points/' . rawurlencode($punkt) . '/characteristics/' . rawurlencode($merkmal),
         array('Authorization: Bearer ' . $t, 'Content-Type: application/json'),
         json_encode($koerper), 25);
-    wp_budget_buchen('onecta');
     if ($a['code'] >= 200 && $a['code'] < 300) { return array(1, ''); }
-    return array(0, $a['code'] === 429 ? 'BUDGET_LEER' : 'HTTP_' . $a['code']);
+    return array(0, wp_oc_api_error($a));
 }
 
 /* ==================================================================

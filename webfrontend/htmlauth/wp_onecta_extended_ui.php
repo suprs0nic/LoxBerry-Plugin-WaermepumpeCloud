@@ -8,6 +8,8 @@ $wp_oc_point = wp_oc_ext_point($wp_oc_device, 'climateControl', '1');
 $wp_oc_mode = wp_oc_ext_get($wp_oc_point, 'operationMode.value');
 ?>
 <h2>Daikin Onecta: zusätzliche Daten und Steuerung</h2>
+<div class="sm-hinweis"><?= wp_e(wp_oc_limits_text()) ?></div>
+<div class="sm-hilfe"><?= wp_e(wp_oc_ext_reason_text(wp_oc_ext_block_reason($wp_oc_device, $wp_oc_point))) ?></div>
 <form action="index.php" method="post">
 <?= wp_fmt() ?>
 <input data-role="none" type="hidden" name="save_onecta_extended" value="1">

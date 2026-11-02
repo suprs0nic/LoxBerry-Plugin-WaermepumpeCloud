@@ -6,13 +6,13 @@ $root = __DIR__ . '/.runtime/run-' . getmypid();
 foreach (array('/config/plugins', '/data/plugins', '/config/system', '/tmp') as $dir) { mkdir($root . $dir, 0700, true); }
 file_put_contents($root . '/config/system/general.json', '{}');
 putenv('LBHOMEDIR=' . $root); putenv('LBPPLUGINDIR=fixture');
-$http = array(); $mqtt = array(); $responseCode = 200; $throwMqtt = false;
+$http = array(); $mqtt = array(); $responseCode = 200; $responseHeaders = array(); $throwMqtt = false;
 $fixture = json_decode(file_get_contents(__DIR__ . '/fixtures/altherma.json'), true)[0];
 function wp_http($method, $url, $headers = array(), $body = null, $timeout = 20) {
-    global $http, $responseCode, $fixture;
+    global $http, $responseCode, $responseHeaders, $fixture;
     $http[] = array($method, $url, $body);
     return array('code' => $method === 'PATCH' && $responseCode === 200 ? 204 : $responseCode,
-        'text' => json_encode($fixture), 'fehler' => '');
+        'text' => json_encode($fixture), 'fehler' => '', 'headers' => $responseHeaders);
 }
 function wp_mqtt_senden($values) {
     global $mqtt, $throwMqtt;
@@ -87,11 +87,51 @@ try {
     check(wp_oc_ext_command('raum_soll', '22.5') === array(false, 'BUDGET_LEER'), '429 acknowledged without retry');
     check(wp_oc_ext_command('heiz_offset', '3')[1] === 'BEFEHLSBREMSE', 'failed write still throttled');
     $responseCode = 200;
+    $limitFile = wp_oc_limits_file();
+    check(wp_oc_lesen($cfg)['fehler'] === 'API_PAUSE', '429 fallback blocks a later read');
+    $count = count($http);
+    check(wp_oc_geraete() === array() && count($http) === $count, '429 pause also blocks device discovery');
+    wp_json_schreiben($limitFile, array());
     wp_json_schreiben(wp_tmpdir() . '/oc_zusatz_befehl.json', array('zeit' => time() - 61));
     wp_json_schreiben(wp_budget_datei('onecta'), array_fill(0, 200, time()));
     $count = count($http);
     check(wp_oc_ext_command('heiz_offset', '3') === array(false, 'BUDGET_LEER') && count($http) === $count, 'existing daily budget respected');
     wp_json_schreiben(wp_budget_datei('onecta'), array());
+    $responseCode = 429; $responseHeaders = array('retry-after' => '120', 'x-ratelimit-remaining-day' => '17');
+    $count = count($http); $used = count(wp_budget_liste('onecta'));
+    check(wp_oc_lesen($cfg)['fehler'] === 'BUDGET_LEER' && count($http) === $count + 1, 'real GET 429 detected');
+    check(count(wp_budget_liste('onecta')) === $used + 1, '429 counted exactly once in daily budget');
+    $state = json_decode(file_get_contents($limitFile), true);
+    check($state['pause_until'] >= time() + 119 && $state['headers']['x-ratelimit-remaining-day'] === '17', 'Retry-After and remaining header persisted');
+    $count = count($http);
+    check(wp_oc_setzen($cfg, '1', 'operationMode', 'heating') === array(0, 'API_PAUSE') && count($http) === $count,
+        'pause protects existing as well as new writers');
+    $responseCode = 200; $responseHeaders = array();
+    wp_json_schreiben($limitFile, array('pause_until' => time() - 1));
+    check(wp_oc_lesen($cfg)['ok'] === 1, 'expired pause allows a regular read');
+    wp_json_schreiben($limitFile, array('attempts' => array_fill(0, 20, time())));
+    $count = count($http);
+    check(wp_oc_lesen($cfg)['fehler'] === 'API_MINUTENLIMIT' && count($http) === $count, 'twenty attempts prevent next minute request');
+    wp_json_schreiben($limitFile, array('attempts' => array_fill(0, 20, time() - 61)));
+    check(wp_oc_lesen($cfg)['ok'] === 1, 'minute window expires without reset at clock boundary');
+    $rateLock = fopen(dirname($limitFile) . '/onecta_limits.lock', 'c'); flock($rateLock, LOCK_EX);
+    $count = count($http);
+    check(wp_oc_api('GET', 'https://api.onecta.daikineurope.com/v1/gateway-devices', array())['fehler'] === 'API_BESCHAEFTIGT'
+        && count($http) === $count, 'shared rate lock rejects concurrent data requests');
+    flock($rateLock, LOCK_UN); fclose($rateLock);
+    file_put_contents($limitFile, '{broken');
+    check(wp_oc_lesen($cfg)['fehler'] === 'API_LIMITDATEI_DEFEKT', 'corrupt persistent rate state fails closed');
+    wp_json_schreiben($limitFile, array('pending' => true));
+    check(wp_oc_lesen($cfg)['fehler'] === 'API_LIMITANTWORT_FEHLT', 'incomplete response state fails closed');
+    wp_json_schreiben($limitFile, array());
+    $saved = wp_stand();
+    foreach (array('isInInstallerState' => 'INSTALLATEURMODUS', 'isHolidayModeActive' => 'URLAUB_AKTIV') as $flag => $expected) {
+        $blockedStand = $saved; $blockedStand['roh']['managementPoints'][1][$flag]['value'] = true;
+        wp_stand_write($blockedStand); $count = count($http);
+        check(wp_oc_ext_command('heiz_offset', '3') === array(false, $expected) && count($http) === $count,
+            'actual dispatcher blocks ' . $expected . ' without HTTP');
+    }
+    wp_stand_write($saved);
     $cfg['oc_zusatz_ein'] = 0; wp_config_write($cfg); $mqtt = array(); wp_abrufen(true);
     check(count($mqtt) === 1 && !isset($mqtt[0]['zusatz/gueltig']), 'telemetry off emits only existing topics');
     // Legacy configuration with no new keys upgrades without losing existing values.

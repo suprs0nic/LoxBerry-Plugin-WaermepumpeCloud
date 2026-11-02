@@ -140,6 +140,7 @@ function wp_pruefungen()
 
     /* ---- Bei Onecta zusaetzlich: Erneuerungsmerkmal aus der Anmeldung ---- */
     if ($cfg['hersteller'] === 'onecta') {
+        $z[] = wp_pruefzeile(-1, 'Daikin API-Kontingent', wp_e(wp_oc_limits_text()));
         $z[] = wp_pruefzeile($g['refresh_token'] !== '' ? 1 : 0, wp_t('TEST.F_ONECTA_ANMELDUNG'),
             $g['refresh_token'] !== '' ? wp_t('TEST.A_ONECTA_ANMELDUNG_OK')
                                        : wp_t('TEST.A_ONECTA_ANMELDUNG_FEHLT'));

@@ -1,4 +1,11 @@
-# Daikin Onecta – Erweiterung 0.9.40 (Testversion)
+# Daikin Onecta – Erweiterung 0.9.41 (Testversion)
+
+Neu in 0.9.41: gemeinsame API-Pausen und Minutenlimits, zusätzliche Zustandsprüfungen
+für neue Befehle und korrigierte Geräteidentität. Details und neue Fehlergründe:
+[Onecta Verbesserungen in Version 0.9.41](ONECTA-0.9.41.md).
+Die am 02.11.2026 nach Anmeldung gelesene offizielle Dokumentation bestätigt inzwischen
+die relative Reihenfolge der Energiearrays. Die Softwareausgabe bleibt unverändert
+bei Rohreihen; die historischen Einschränkungen zu Kalenderdaten gelten weiter.
 
 Diese Erweiterung basiert auf Version 0.9.39 des Forks. Ein Upgrade von der beim
 Auftraggeber installierten 0.9.36 nutzt die unveränderten Sicherungs- und
@@ -9,7 +16,7 @@ muss noch geprüft werden. Es findet keine Installation auf einer produktiven An
 
 1. Bestehende Plugin-Konfiguration und LoxBerry sichern. Für einen Rückweg zusätzlich
    die bisherige Installationsversion bereithalten. Zunächst auf einer Testinstallation prüfen.
-2. Das ZIP `WaermepumpeCloud-0.9.40-onecta-test.zip` in der LoxBerry-Pluginverwaltung
+2. Das ZIP `WaermepumpeCloud-0.9.41-onecta-test.zip` in der LoxBerry-Pluginverwaltung
    als manuelles Update installieren. Der Pluginname und Ordner bleiben `waermepumpe`.
    Das Paket ist strukturell geprüft, noch nicht durch einen echten LoxBerry-Installer gelaufen.
 3. Bestehende Daikin-Einrichtung und Feldzuordnungen beibehalten. Eine neue OAuth-Anmeldung

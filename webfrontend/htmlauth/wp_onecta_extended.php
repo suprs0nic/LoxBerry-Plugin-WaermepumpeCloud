@@ -15,15 +15,16 @@ function wp_oc_ext_device($raw, $id = '')
 {
     if (!is_array($raw)) { return array(); }
     if (isset($raw['managementPoints']) && is_array($raw['managementPoints'])) {
-        foreach (array('id', '_id') as $key) {
-            if ($id !== '' && isset($raw[$key]) && $raw[$key] !== $id) { return array(); }
-        }
+        // The official device id is authoritative. A deprecated _id may legitimately differ.
+        $actual = array_key_exists('id', $raw) ? $raw['id'] : (isset($raw['_id']) ? $raw['_id'] : null);
+        if (array_key_exists('id', $raw) && (!is_string($raw['id']) || $raw['id'] === '')) { return array(); }
+        if ($id !== '' && $actual !== null && $actual !== $id) { return array(); }
         return $raw;
     }
     $matches = array();
     foreach ($raw as $device) {
         if (!is_array($device) || !isset($device['managementPoints'])) { continue; }
-        if ($id !== '' && (isset($device['id']) ? $device['id'] : (isset($device['_id']) ? $device['_id'] : null)) !== $id) { continue; }
+        if ($id !== '' && (array_key_exists('id', $device) ? $device['id'] : (isset($device['_id']) ? $device['_id'] : null)) !== $id) { continue; }
         $matches[] = $device;
     }
     return count($matches) === 1 ? $matches[0] : array();
@@ -155,6 +156,34 @@ function wp_oc_ext_options()
         'oc_heizmodus' => 'Betriebsart freigeben (heating, cooling, auto)');
 }
 
+/** State checks use current target flags; firmware blocks apply to the whole gateway. */
+function wp_oc_ext_block_reason($device, $point)
+{
+    foreach (array('isInInstallerState.value', 'isHolidayModeActive.value') as $path) {
+        $flag = wp_oc_ext_get($point, $path);
+        if ($flag !== null && !is_bool($flag)) { return 'ANLAGENZUSTAND_UNGUELTIG'; }
+    }
+    if (wp_oc_ext_get($point, 'isInInstallerState.value') === true) { return 'INSTALLATEURMODUS'; }
+    $holiday = wp_oc_ext_get($point, 'isHolidayModeActive.value');
+    if ($holiday === true || ($holiday === null && wp_oc_ext_get($point, 'holidayMode.value.enabled') === true)) { return 'URLAUB_AKTIV'; }
+    $points = wp_oc_ext_get($device, 'managementPoints');
+    foreach (is_array($points) ? $points : array() as $p) {
+        if (wp_oc_ext_get($p, 'firmwareUpdate.value.type') === 'blocking') { return 'FIRMWARE_BLOCKIERT'; }
+        if (wp_oc_ext_get($p, 'firmwareUpdateStatus.value') === 'in-progress') { return 'FIRMWARE_UPDATE_AKTIV'; }
+    }
+    return '';
+}
+
+function wp_oc_ext_reason_text($reason)
+{
+    $texts = array('INSTALLATEURMODUS' => 'Installateurmodus aktiv: neue Steuerbefehle gesperrt.',
+        'ANLAGENZUSTAND_UNGUELTIG' => 'Anlagenzustand ist ungültig: neue Steuerbefehle gesperrt.',
+        'URLAUB_AKTIV' => 'Urlaubsmodus aktiv oder nicht eindeutig ausgeschlossen: neue Steuerbefehle gesperrt.',
+        'FIRMWARE_BLOCKIERT' => 'Ein blockierendes Firmwareupdate sperrt die Cloudsteuerung.',
+        'FIRMWARE_UPDATE_AKTIV' => 'Firmwareupdate läuft: neue Steuerbefehle gesperrt.');
+    return isset($texts[$reason]) ? $texts[$reason] : 'Kein zusätzlicher Anlagenzustand blockiert neue Steuerbefehle. Gerätefreigaben und Datenalter gelten weiterhin.';
+}
+
 /** Pure allowlisted request plan. Metadata must come from a recent successful poll. */
 function wp_oc_ext_plan($name, $value, array $cfg, array $stand, $now)
 {
@@ -175,6 +204,8 @@ function wp_oc_ext_plan($name, $value, array $cfg, array $stand, $now)
     $d = wp_oc_ext_device(isset($stand['roh']) ? $stand['roh'] : null, $cfg['geraet']);
     if (wp_oc_ext_get($d, 'isCloudConnectionUp.value') !== true) { return $fail('CLOUD_OFFLINE'); }
     $p = wp_oc_ext_point($d, 'climateControl', '1');
+    $blocked = wp_oc_ext_block_reason($d, $p);
+    if ($blocked !== '') { return $fail($blocked); }
     if (!isset($p['embeddedId']) || !is_string($p['embeddedId']) || !preg_match('/^[A-Za-z0-9_-]{1,80}$/D', $p['embeddedId'])) {
         return $fail('KEIN_HEIZKREIS');
     }

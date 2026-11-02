@@ -15,6 +15,7 @@ REQUIRED = ('plugin.cfg', 'preinstall.sh', 'postinstall.sh', 'preupgrade.sh', 'p
             'bin/wp_abruf.php', 'bin/befehlsbruecke.sh', 'bin/befehle_zuordnung.php', 'cron/cron.01min',
             'webfrontend/html/index.php', 'webfrontend/htmlauth/index.php',
             'webfrontend/htmlauth/wp_lib.php', 'webfrontend/htmlauth/wp_onecta_extended.php',
+            'webfrontend/htmlauth/wp_onecta_limits.php',
             'webfrontend/htmlauth/wp_onecta_extended_ui.php', 'config/mqtt_subscriptions.cfg')
 
 
@@ -37,7 +38,8 @@ def verify(path):
             if rel.endswith('.sh') or rel.startswith(('cron/', 'uninstall/')):
                 mode = archive.getinfo(name).external_attr >> 16
                 assert mode & stat.S_IXUSR, f'Executable bit missing: {rel}'
-        assert b'VERSION=0.9.40' in archive.read(members['plugin.cfg'])
+        version = re.search(rb'^VERSION=([0-9]+\.[0-9]+\.[0-9]+)\r?$', archive.read(members['plugin.cfg']), re.M)
+        assert version and prefix == 'waermepumpe-' + version[1].decode('ascii') + '/', 'Archive root/version mismatch'
         assert b'AUTOMATIC_UPDATES=false' in archive.read(members['plugin.cfg'])
         print(f'Package verified: {len(names)} files, structure/CRC/LF/permissions/private-file exclusions OK')
 

@@ -1,4 +1,6 @@
-# MQTT-Datenpunktliste Onecta 0.9.40
+# MQTT-Datenpunktliste Onecta 0.9.41
+
+Version 0.9.41 ergänzt keine Topics. Neue Ablehnungsgründe und API-Pausen: [ONECTA-0.9.41.md](ONECTA-0.9.41.md).
 
 Alle folgenden Namen beginnen mit `<präfix>/zusatz/` (Vorgabe `waermepumpe/zusatz/`).
 Alle Zusatztopics sind **nicht retained**. Boolean: `1`/`0`; Zahl: Dezimalpunkt;
