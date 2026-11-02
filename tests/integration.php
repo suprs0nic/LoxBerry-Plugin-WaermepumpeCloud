@@ -49,11 +49,17 @@ try {
     check(count($mqtt) === 2 && $mqtt[1]['zusatz/heizmodus'] === 'heating' && $mqtt[1]['zusatz/gueltig'] === '1', 'regular poll publishes extension');
     check(isset($mqtt[0]['AUSSEN'], $mqtt[0]['WW'], $mqtt[0]['EIN']) && $mqtt[0]['RUECKLAUF'] === wp_fehlwert('RUECKLAUF'), 'legacy MQTT still published with explicit missing return marker');
     check(wp_stand()['oc_zusatz_geraet'] === 'fixture-gateway', 'cached capabilities belong to configured gateway');
+    check(wp_stand()['oc_energie_zeit'] === wp_stand()['oc_zusatz_zeit'], 'energy capture timestamp persisted with raw response');
+    check(isset($mqtt[1]['zusatz/energie/gesamt/gestern/bekannt_kwh'])
+        && $mqtt[1]['zusatz/energie/heizung/dieser_monat/bekannt_kwh'] === '-', 'normal poll adds summaries, month needs timezone');
     $wp_cfg = wp_config(false);
     ob_start(); include __DIR__ . '/../webfrontend/htmlauth/wp_onecta_extended_ui.php'; $html = ob_get_clean();
     check(strpos($html, 'name="oc_heiz_offset" value="1" checked') !== false
         && strpos($html, 'fixture-gateway') === false && strpos($html, 'zusatz/energie/heizung') !== false,
         'real UI renders saved checkbox and data topics without gateway identifiers');
+    check(strpos($html, 'Elektrischer Energieverbrauch') !== false && strpos($html, 'Heute bisher') !== false
+        && strpos($html, 'Summe dieser Bereiche') !== false && strpos($html, 'name="oc_energie_zeitzone"') !== false,
+        'energy table and explicit timezone field rendered');
     $saved = wp_stand(); $injected = $saved; $injected['roh']['deviceModel'] = '<script>alert(1)</script>';
     wp_stand_write($injected);
     ob_start(); include __DIR__ . '/../webfrontend/htmlauth/wp_onecta_extended_ui.php'; $html = ob_get_clean();
@@ -79,6 +85,7 @@ try {
     check($request[0] === 'PATCH' && $request[1] === 'https://api.onecta.daikineurope.com/v1/gateway-devices/fixture-gateway/management-points/1/characteristics/temperatureControl', 'actual numeric-id endpoint');
     check(json_decode($request[2], true) === array('value' => 2, 'path' => '/operationModes/heating/setpoints/leavingWaterOffset'), 'actual PATCH body');
     check(wp_stand()['oc_zusatz_zeit'] === 0, 'successful command invalidates snapshot');
+    check(wp_stand()['oc_energie_zeit'] > 0, 'write does not erase historical energy capture date');
     check(wp_oc_ext_command('heizmodus', 'cooling')[1] === 'DATEN_VERALTET', 'must poll again before another command');
     wp_abrufen(true);
     check(wp_oc_ext_command('heizmodus', 'cooling')[1] === 'BEFEHLSBREMSE', 'global cooldown across command types');
@@ -136,9 +143,11 @@ try {
     check(count($mqtt) === 1 && !isset($mqtt[0]['zusatz/gueltig']), 'telemetry off emits only existing topics');
     // Legacy configuration with no new keys upgrades without losing existing values.
     foreach (wp_oc_ext_options() as $key => $label) { unset($cfg[$key]); }
+    unset($cfg['oc_energie_zeitzone']);
     wp_config_write($cfg); $read = wp_config(false);
     check($read['oc_heiz_offset'] === 0 && $read['oc_zusatz_ein'] === 0 && $read['aktionstoken'] === $cfg['aktionstoken']
         && $read['zuordnung'] === $cfg['zuordnung'], 'old config gains disabled defaults and keeps existing token/mapping');
+    check($read['oc_energie_zeitzone'] === '', 'old config never assumes a gateway timezone');
 } finally {
     // Only the test-created directory under tests/.runtime is eligible for cleanup.
     $base = realpath(__DIR__ . '/.runtime'); $target = realpath($root);

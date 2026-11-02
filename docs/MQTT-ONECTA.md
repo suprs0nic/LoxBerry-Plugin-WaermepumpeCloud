@@ -1,6 +1,9 @@
-# MQTT-Datenpunktliste Onecta 0.9.41
+# MQTT-Datenpunktliste Onecta 0.9.42
 
-Version 0.9.41 ergänzt keine Topics. Neue Ablehnungsgründe und API-Pausen: [ONECTA-0.9.41.md](ONECTA-0.9.41.md).
+Neu in 0.9.42: 101 Energie-Topics für acht Perioden, vier Bereiche und Zeitbasis.
+Vollständige Namen, Bedeutung und Loxone-Beispiele: [Energieauswertung](ONECTA-ENERGIE.md).
+Die folgenden bisherigen Topics bleiben unverändert.
+Ablehnungsgründe und API-Pausen aus 0.9.41: [ONECTA-0.9.41.md](ONECTA-0.9.41.md).
 
 Alle folgenden Namen beginnen mit `<präfix>/zusatz/` (Vorgabe `waermepumpe/zusatz/`).
 Alle Zusatztopics sind **nicht retained**. Boolean: `1`/`0`; Zahl: Dezimalpunkt;

@@ -19,12 +19,47 @@ $wp_oc_mode = wp_oc_ext_get($wp_oc_point, 'operationMode.value');
  name="<?= wp_e($wp_oc_key) ?>" value="1"<?= !empty($wp_cfg[$wp_oc_key]) ? ' checked' : '' ?>>
  <?= wp_e($wp_oc_label) ?></label></div>
 <?php } ?>
+<div class="sm-feld"><label for="oc_energie_zeitzone">Energie-Zeitzone, falls das Gateway keine meldet</label>
+<input data-role="none" type="text" id="oc_energie_zeitzone" name="oc_energie_zeitzone" maxlength="64"
+ value="<?= wp_e(isset($wp_cfg['oc_energie_zeitzone']) ? $wp_cfg['oc_energie_zeitzone'] : '') ?>" placeholder="z. B. Europe/Vienna">
+<div class="sm-hilfe">Leer = ausschließlich Gerätezeitzone verwenden. Nur eine ausdrücklich bestätigte Anlagenzeitzone eintragen.
+Die vom Gateway gemeldete Zeitzone hat Vorrang. Ohne Zeitzone bleiben aktueller und vorheriger Monat offen.</div></div>
 <div class="sm-hilfe">Alle Erweiterungen sind ab Werk aus. Steuerung benötigt zusätzlich beide MQTT-Befehlsfreigaben oben.
 Der Gerätebereich, Schrittweite und settable=true werden vor jedem neuen Befehl geprüft.
 Ein Schreibversuch pro Minute für alle neuen Befehle zusammen; nach erfolgreichem Schreiben ist ein regulärer Abruf erforderlich.
 SG-Ready-Anhebung oder -Sperre hat Vorrang. Warmwasser-Sollwert und Zeitplan werden nicht geschrieben.</div>
 <div class="sm-knopfreihe"><button data-role="none" class="sm-btn sm-b-aktion" type="submit">Daikin-Erweiterung speichern</button></div>
 </form>
+<?php
+$wp_oc_energy = wp_oc_energy_summary(isset($wp_oc_stand['roh']) ? $wp_oc_stand['roh'] : null, $wp_cfg['geraet'],
+    isset($wp_oc_stand['oc_energie_zeit']) ? $wp_oc_stand['oc_energie_zeit'] : 0,
+    isset($wp_cfg['oc_energie_zeitzone']) ? $wp_cfg['oc_energie_zeitzone'] : '');
+?>
+<h3>Elektrischer Energieverbrauch</h3>
+<p>Bekannter Verbrauch aus dem gespeicherten Abruf, in kWh. Laufende Zeiträume sind Zwischenstände.
+„Vollständig“ bedeutet: Zeitraum abgeschlossen und alle erwarteten API-Werte vorhanden.
+Die Daten können um mehrere Stunden verzögert sein.</p>
+<p class="sm-hilfe">„Heute“, „gestern“ und die weiteren Zeiträume beziehen sich auf den gespeicherten Abruf.
+Bei alten oder fehlgeschlagenen Abrufen sind dies keine aktuellen Verbrauchswerte.
+<?php if (empty($wp_oc_stand['ok'])) { ?>Der letzte Abruf war nicht erfolgreich.<?php } ?></p>
+<div class="sm-hilfe">Empfangen: <?= $wp_oc_energy['zeitbasis']['empfangen_unix'] !== null
+    ? wp_e(gmdate('d.m.Y H:i:s', $wp_oc_energy['zeitbasis']['empfangen_unix']) . ' UTC') : 'noch kein Abruf mit gespeicherter Energiezeit' ?>.
+Bezugsdatum: <?= wp_e($wp_oc_energy['zeitbasis']['bezugsdatum'] ?: 'nur relative Zeiträume') ?>;
+Zeitzone: <?= wp_e($wp_oc_energy['zeitbasis']['zeitzone'] ?: 'nicht bestätigt') ?>
+(<?= wp_e($wp_oc_energy['zeitbasis']['quelle']) ?>).
+Ohne bestätigte Zeitzone bleiben die Monatswerte offen. Die Anzeige verwendet das Datum des gespeicherten Abrufs.</div>
+<div style="overflow-x:auto"><table class="sm-tbl">
+<tr><th>Zeitraum</th><th>Heizung</th><th>Kühlung</th><th>Warmwasser</th><th>Summe dieser Bereiche</th></tr>
+<?php foreach (wp_oc_energy_periods() as $wp_oc_period => $wp_oc_def) { ?>
+<tr><td><?= wp_e($wp_oc_def[0]) ?></td>
+<?php foreach (array('heizung', 'kuehlung', 'warmwasser', 'gesamt') as $wp_oc_cat) { ?>
+<td><?= wp_e(wp_oc_energy_label($wp_oc_energy['bereiche'][$wp_oc_cat][$wp_oc_period])) ?></td>
+<?php } ?></tr>
+<?php } ?></table></div>
+<p class="sm-hilfe">Loxone: <code><?= wp_e($wp_cfg['mqtt_topic']) ?>/zusatz/energie/heizung/heute/bekannt_kwh</code>
+liefert den bekannten Stand für heute. <code>…/gestern/gesamt_kwh</code> liefert nur bei vollständigen Werten eine Zahl;
+andernfalls <code>-</code>. Dazu <code>…/vollstaendig</code> und den Empfangs-Timeout auswerten.
+Keine Leistung und kein fortlaufender Zähler: diese Werte nicht bei jedem MQTT-Empfang aufsummieren.</p>
 <h3>Gerätebereiche aus dem gespeicherten Abruf</h3>
 <table class="sm-tbl"><tr><th>Befehl</th><th>API-Pfad / Modus</th><th>Minimum / Maximum / Schritt</th><th>API schreibbar</th></tr>
 <?php foreach (array('heiz_offset' => array('heating', 'leavingWaterOffset'),

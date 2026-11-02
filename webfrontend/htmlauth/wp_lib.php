@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/wp_onecta_extended.php';
 require_once __DIR__ . '/wp_onecta_limits.php';
+require_once __DIR__ . '/wp_onecta_energy.php';
 /**
  * Waermepumpe Cloud fuer LoxBerry - Pfade, Konfiguration, Hersteller, Vorlage
  *
@@ -639,6 +640,7 @@ function wp_vorgaben()
         'oc_heiz_offset' => 0,
         'oc_raum_soll' => 0,
         'oc_heizmodus' => 0,
+        'oc_energie_zeitzone' => '', // empty: use gateway metadata only, never infer from host timezone
         /* Nr. 36 b (Stufe 2): Ansagen ueber die gemeinsame Sprachausgabe. Ab Werk keine Ausgabe
          * ('aus'); die beiden Anlaesse sind an, wirken aber erst mit einer Ausgabeart. */
         'ansage_anmeldung' => 1,
@@ -5194,6 +5196,7 @@ function wp_abrufen($erzwingen = false)
         $stand['roh'] = $erg['roh'];
         if ($cfg['hersteller'] === 'onecta') {
             $stand['oc_zusatz_zeit'] = time();
+            $stand['oc_energie_zeit'] = $stand['oc_zusatz_zeit'];
             $stand['oc_zusatz_geraet'] = $cfg['geraet'];
         }
         $stand['wege'] = $u['wege'];
@@ -5366,6 +5369,8 @@ function wp_abrufen($erzwingen = false)
             $extra = array('zusatz/gueltig' => '0');
             if ($erg['ok'] && wp_oc_ext_device($erg['roh'], $cfg['geraet'])) {
                 $extra = wp_oc_ext_map($erg['roh'], $cfg['geraet']);
+                $extra = array_merge($extra, wp_oc_energy_topics(wp_oc_energy_summary(
+                    $erg['roh'], $cfg['geraet'], $stand['oc_energie_zeit'], $cfg['oc_energie_zeitzone'])));
                 $extra['zusatz/gueltig'] = '1';
                 $extra['zusatz/zeit'] = (string) time();
             }

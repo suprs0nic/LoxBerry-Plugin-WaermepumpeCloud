@@ -1,5 +1,18 @@
 # Changelog des Forks
 
+## 0.9.42 - Verständliche Energieauswertung (2026-11-02)
+
+- Verbrauchstabelle für Heizung, Kühlung, Warmwasser und deren Summe: heute/gestern,
+  diese/letzte Woche, dieser/letzter Monat sowie dieses/letztes Jahr.
+- Bekannte Teilsumme, Datenabdeckung und vollständige abgeschlossene Perioden getrennt.
+  Fehlende Werte bleiben unbekannt; keine zusätzliche Leistung oder Arbeitszahl erfunden.
+- Zusätzliche MQTT-Topics für Perioden, Status und Zeitbasis; Rohreihen unverändert.
+  Gleicher regulärer Abruf, keine weiteren Cloud-Aufrufe, keine Verbrauchshistorie.
+- Gateway-Zeitzone bevorzugt; optional bestätigte Anlagenzeitzone im MQTT-Reiter.
+  Eigene gespeicherte Empfangszeit, keine angenommene Rechnerzeitzone oder deprecated Zeitstempel.
+- Monatswechsel, Jahreswechsel, Datenlücken, echte Null, Einheiten, MQTT und UI offline geprüft.
+  Anleitung mit Loxone-Beispielen und manuelles Test-ZIP 0.9.42 ergänzt.
+
 ## 0.9.41 – Onecta Stabilisierung (2026-11-02)
 
 - Alle drei bestehenden Onecta-Datenendpunkte verwenden eine gemeinsame, nicht wartende

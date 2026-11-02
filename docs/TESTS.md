@@ -1,4 +1,4 @@
-# Prüfbericht – Onecta 0.9.41
+# Prüfbericht - Onecta 0.9.42
 
 Stand: 2026-11-02. Ausgangspunkt: Fork master `6e995e1`, Plugin 0.9.39.
 Lokale Umgebung: Windows, PHP 8.4.4 CLI, Python 3.14.3. Es wurden keine echten
@@ -9,7 +9,7 @@ Cloud-Schreibzugriffe, Brokerbefehle oder LoxBerry-Installationen ausgeführt.
 ```text
 python tools/check.py --php C:/php-8.4.4/php.exe
 python tools/package.py
-python tools/package.py --verify dist/WaermepumpeCloud-0.9.41-onecta-test.zip
+python tools/package.py --verify dist/WaermepumpeCloud-0.9.42-onecta-test.zip
 ```
 
 Unter Linux mit PHP auf PATH genügt `python tools/check.py`. Das Workflow
@@ -23,8 +23,9 @@ belegt nicht, dass dieser Remote-Workflow bereits durchgelaufen ist.
 |---|---|---|
 | PHP-Syntax aller PHP-Dateien | bestanden, PHP 8.4.4 | PHP 7.4 zusätzlich im CI vorgesehen |
 | `tests/onecta.php` | 195 Prüfungen, 0 Fehler | Fixture, reine Funktionen und Brückenparser |
+| `tests/energy.php` | 225 Prüfungen, 0 Fehler | alle Perioden, Lücken, echte Null, Einheiten, Zeitzonen, MQTT-Payloads |
 | `tests/onecta_limits.php` | 43 Prüfungen, 0 Fehler | Header, Zeitfenster, Geräteidentität und Anlagenzustände |
-| `tests/integration.php` | 40 Prüfungen, 0 Fehler | reale Abruf-/Konfig-/Writer-/UI-Logik, HTTP und MQTT ersetzt |
+| `tests/integration.php` | 45 Prüfungen, 0 Fehler | reale Abruf-/Konfig-/Writer-/UI-/Energielogik, HTTP und MQTT ersetzt |
 | vorhandenes `befehlsbruecke.php --selbsttest` | 122 Fälle, 0 Fehler | Rechenkern ohne Mosquitto-Prozesse |
 | `tests/http_headers.php` | je 6 Prüfungen mit curl und PHP-Streams, 0 Fehler | echter HTTP-Transport ausschließlich zum temporären Loopback-Testserver |
 | `git diff --check` | bestanden | Format-/Whitespaceprüfung |
@@ -63,12 +64,12 @@ Neue Anlagenprüfungen: Installateurmodus und aktiver Urlaub ohne HTTP-Weitergab
 zukünftiger Urlaub mit explizit inaktivem Status, ungültige boolesche Zustände,
 blockierende Updates an Gateway/MMI, laufendes Update und nicht blockierendes optionales
 Update. Geräte-id gegen abweichende deprecated _id, Fallback nur bei fehlender id sowie
-ungültige vorhandene id werden separat geprüft. Insgesamt 412 erfolgreiche Prüffälle
+ungültige vorhandene id werden separat geprüft. Insgesamt 642 erfolgreiche Prüffälle
 zuzüglich PHP-Syntax und Paketprüfung in der lokalen Windows-Ausführung.
 
 ## Noch auf echter Testanlage auszuführen
 
-- Installation und Upgrade 0.9.36 → 0.9.40 durch den echten LoxBerry-Installer;
+- Installation und Upgrade auf 0.9.42 durch den echten LoxBerry-Installer;
   Wiederherstellung bestehender Konfiguration und Rückbau mit Sicherung.
 - Darstellung/Bedienbarkeit mit echtem LoxBerry-Webrahmen und jQuery-Mobile,
   lokale Anzeige und Speicherung der neuen Freigaben.
@@ -81,7 +82,9 @@ zuzüglich PHP-Syntax und Paketprüfung in der lokalen Windows-Ausführung.
   Gerätemessung getrennt prüfen. Keine Betriebsart zum bloßen Test ungewollt umschalten.
 - Mehrkreis-/andere Daikin-Modelle und deren Metadaten. Die Erweiterung unterstützt
   bewusst nur einen eindeutig identifizierbaren Heizkreis und Warmwasserspeicher.
-- Offizielle Daikin-Dokumentation zu zeitlicher Reihenfolge und Periodengrenzen der
-  Verbrauchsreihen. Bis dahin gibt es ausschließlich indizierte Rohdaten ohne Kalenderdatum.
+- Vergleich der Energie-Periodensummen mit der Onecta-App, insbesondere nach
+  Mitternacht, Monatswechsel und Zeitumstellung sowie bei verzögerten Cloud-Updates.
+  Die offizielle Reihenfolge wurde am 02.11.2026 gelesen und ist jetzt Grundlage
+  der separat ausgegebenen Periodenauswertung; Rohreihen bleiben unverändert.
 
 Das ZIP ist eine strukturell geprüfte Testversion, keine als produktiv erprobte Freigabe.

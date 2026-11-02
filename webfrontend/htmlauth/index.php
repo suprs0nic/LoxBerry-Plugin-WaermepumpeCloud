@@ -665,10 +665,13 @@ if ($wp_post && isset($_POST['save_mqtt'])) {
 /* Optional Onecta settings: independent form behind the existing session/form guard. */
 if ($wp_post && isset($_POST['save_onecta_extended'])) {
     $wp_oc_cfg = wp_config();
+    $wp_oc_zone_input = isset($_POST['oc_energie_zeitzone']) ? $_POST['oc_energie_zeitzone'] : '';
+    $wp_oc_zone_ok = is_string($wp_oc_zone_input) && ($wp_oc_zone_input === '' || wp_oc_energy_zone_valid($wp_oc_zone_input));
     foreach (wp_oc_ext_options() as $wp_oc_key => $wp_oc_label) {
         $wp_oc_cfg[$wp_oc_key] = isset($_POST[$wp_oc_key]) && $_POST[$wp_oc_key] === '1' ? 1 : 0;
     }
-    if (wp_config_write($wp_oc_cfg)) { $wp_meldungen[] = wp_t('EINST.GESPEICHERT'); }
+    if (!$wp_oc_zone_ok) { $wp_fehler[] = 'Keine Daikin-Einstellung gespeichert: gültige Zeitzone wie Europe/Vienna eingeben oder das Feld leer lassen.'; }
+    elseif (wp_config_write(array_merge($wp_oc_cfg, array('oc_energie_zeitzone' => $wp_oc_zone_input)))) { $wp_meldungen[] = wp_t('EINST.GESPEICHERT'); }
     else { $wp_fehler[] = 'Daikin-Einstellungen konnten nicht gespeichert werden.'; }
     $wp_cfg = wp_config();
     $wp_tab = 'tab-mqtt';

@@ -16,7 +16,7 @@ for path in sorted(ROOT.rglob('*.php')):
     if '.runtime' not in path.parts:
         subprocess.run([args.php, '-l', str(path)], check=True, cwd=ROOT, stdout=subprocess.DEVNULL)
 print('PHP syntax: all files OK', flush=True)
-for test in ('tests/onecta.php', 'tests/onecta_limits.php', 'tests/integration.php'):
+for test in ('tests/onecta.php', 'tests/energy.php', 'tests/onecta_limits.php', 'tests/integration.php'):
     subprocess.run([args.php, test], check=True, cwd=ROOT)
 subprocess.run([args.php, 'bin/befehlsbruecke.php', '--selbsttest'], check=True, cwd=ROOT)
 

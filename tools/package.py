@@ -16,6 +16,7 @@ REQUIRED = ('plugin.cfg', 'preinstall.sh', 'postinstall.sh', 'preupgrade.sh', 'p
             'webfrontend/html/index.php', 'webfrontend/htmlauth/index.php',
             'webfrontend/htmlauth/wp_lib.php', 'webfrontend/htmlauth/wp_onecta_extended.php',
             'webfrontend/htmlauth/wp_onecta_limits.php',
+            'webfrontend/htmlauth/wp_onecta_energy.php',
             'webfrontend/htmlauth/wp_onecta_extended_ui.php', 'config/mqtt_subscriptions.cfg')
 
 
