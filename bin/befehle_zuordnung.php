@@ -50,6 +50,18 @@ return array(
         wp_log('Befehlsbruecke ' . ($stufe === 'INFO' ? '' : $stufe . ': ') . $text);
     },
     'befehle' => array(
+        'heiz_offset' => array('art' => 'ganz', 'min' => -10, 'max' => 10, 'eingreifend' => true,
+            'titel' => 'Daikin Heizkurvenverschiebung (MQTT)', 'kachel' => 'BEFEHL.K_SG',
+            'quittung' => 'ausgefuehrt',
+            'tun' => function ($w, $t) { return wp_oc_ext_command('heiz_offset', $w); }),
+        'raum_soll' => array('art' => 'zahl', 'min' => 12, 'max' => 35, 'eingreifend' => true,
+            'titel' => 'Daikin Raum-Solltemperatur (MQTT)', 'kachel' => 'BEFEHL.K_SG',
+            'quittung' => 'ausgefuehrt',
+            'tun' => function ($w, $t) { return wp_oc_ext_command('raum_soll', $w); }),
+        'heizmodus' => array('art' => 'auswahl', 'werte' => array('heating', 'cooling', 'auto'), 'eingreifend' => true,
+            'titel' => 'Daikin Betriebsart (MQTT)', 'kachel' => 'BEFEHL.K_SG',
+            'quittung' => 'ausgefuehrt',
+            'tun' => function ($w, $t) { return wp_oc_ext_command('heizmodus', $w); }),
         'sgready'  => array('art' => 'auswahl', 'werte' => array('1', '2', '3', '4'), 'eingreifend' => true,
                             'sperre_s' => 0, 'begruendung' => $wp_ohne_sperre,
                             'titel' => 'Wärmepumpe Cloud SG Ready (MQTT)', 'kachel' => 'BEFEHL.K_SG',

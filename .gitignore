@@ -1,0 +1,9 @@
+/dist/
+/tmp/
+/data/
+/data.bestand/
+/log/
+/config/waermepumpe*.json
+/config/geheim*.json
+/tests/.runtime/
+__pycache__/

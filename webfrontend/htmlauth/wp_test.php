@@ -645,6 +645,18 @@ function wp_pruefungen()
             . '" onclick="return wpAdresseKopieren(this);">' . wp_e(wp_t('TEST.K_ADRESSE_KOPIEREN')) . '</button>');
     }
 
+    if ($cfg['hersteller'] === 'onecta') {
+        $oc_values = wp_oc_ext_map(isset($stand['roh']) ? $stand['roh'] : null, $cfg['geraet']);
+        $oc_count = count(array_filter($oc_values, function ($v) { return $v !== '-'; }));
+        $z[] = wp_pruefzeile($oc_count ? 1 : -1, 'Daikin-Zusatzdaten (lokaler letzter Abruf)',
+            $oc_count . ' von ' . count($oc_values) . ' Datenpunkten vorhanden; MQTT '
+            . (empty($cfg['oc_zusatz_ein']) ? 'deaktiviert' : 'aktiviert') . '. Keine zusätzliche Cloud-Anfrage.');
+        $z[] = wp_pruefzeile(-1, 'Daikin-Zusatzsteuerung',
+            'Freigaben: Offset ' . (empty($cfg['oc_heiz_offset']) ? 'aus' : 'ein')
+            . ', Raum-Soll ' . (empty($cfg['oc_raum_soll']) ? 'aus' : 'ein')
+            . ', Betriebsart ' . (empty($cfg['oc_heizmodus']) ? 'aus' : 'ein')
+            . '. Kein Schreibtest. Energiedaten ohne verifizierte Kalenderzuordnung.');
+    }
     return $z;
 }
 

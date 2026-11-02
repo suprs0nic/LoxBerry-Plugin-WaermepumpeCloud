@@ -662,6 +662,18 @@ if ($wp_post && isset($_POST['save_mqtt'])) {
     $wp_tab = 'tab-mqtt';
 }
 
+/* Optional Onecta settings: independent form behind the existing session/form guard. */
+if ($wp_post && isset($_POST['save_onecta_extended'])) {
+    $wp_oc_cfg = wp_config();
+    foreach (wp_oc_ext_options() as $wp_oc_key => $wp_oc_label) {
+        $wp_oc_cfg[$wp_oc_key] = isset($_POST[$wp_oc_key]) && $_POST[$wp_oc_key] === '1' ? 1 : 0;
+    }
+    if (wp_config_write($wp_oc_cfg)) { $wp_meldungen[] = wp_t('EINST.GESPEICHERT'); }
+    else { $wp_fehler[] = 'Daikin-Einstellungen konnten nicht gespeichert werden.'; }
+    $wp_cfg = wp_config();
+    $wp_tab = 'tab-mqtt';
+}
+
 /* ================= SG Ready speichern ================= */
 if ($wp_post && isset($_POST['speichern_sg'])) {
     $wp_f0 = count($wp_fehler);
@@ -1641,6 +1653,7 @@ if (!$wp_verlauf) { ?>
   <button data-role="none" class="sm-btn sm-b-aktion" type="submit"><?= wp_e(wp_t('ALLG.SPEICHERN')) ?></button>
 </div>
 </form>
+<?php if ($wp_cfg['hersteller'] === 'onecta') { include __DIR__ . '/wp_onecta_extended_ui.php'; } ?>
 <h2><?= wp_e(wp_t('MQTT.H_TITEL')) ?></h2>
 <?php /* Der frueher hier eingeschobene Zweitpruefblock (wp_hs_autostart) ist
    entfallen: wp_mqtt_zustand() prueft seit 0.9.6 den richtigen Schluessel

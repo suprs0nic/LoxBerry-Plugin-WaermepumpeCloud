@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/wp_onecta_extended.php';
 /**
  * Waermepumpe Cloud fuer LoxBerry - Pfade, Konfiguration, Hersteller, Vorlage
  *
@@ -633,6 +634,10 @@ function wp_vorgaben()
          * quittiert die Bruecke sgready und ww_boost mit "abgelehnt: zweiter Haken aus". */
         'befehle_mqtt_ein'     => 0,
         'befehle_mqtt_steuern' => 0,
+        'oc_zusatz_ein' => 0,
+        'oc_heiz_offset' => 0,
+        'oc_raum_soll' => 0,
+        'oc_heizmodus' => 0,
         /* Nr. 36 b (Stufe 2): Ansagen ueber die gemeinsame Sprachausgabe. Ab Werk keine Ausgabe
          * ('aus'); die beiden Anlaesse sind an, wirken aber erst mit einer Ausgabeart. */
         'ansage_anmeldung' => 1,
@@ -1477,7 +1482,7 @@ function wp_felder()
         )),
         'RUECKLAUF' => array(1, -20, 100, 'FELD.RUECKLAUF', array(
             'myuplink' => array('#40012', '~ruecklauf|return line|BT3'),
-            'onecta'   => array('managementPoints[embeddedId=climateControl].sensoryData.value.leavingWaterTemperature.value'),
+            'onecta'   => array(), // No return sensor; leavingWaterTemperature is the flow.
             'melcloud' => array('ReturnTemperature'),
             // myVAILLANT gibt keine Ruecklauftemperatur heraus. Bewusst leer -
             // ein naheliegender, aber falscher Pfad waere schlimmer als nichts.
@@ -1728,7 +1733,16 @@ function wp_kandidaten($feld, $cfg)
         return array($eigen[$feld]);
     }
     $k = $f[$feld][4];
-    return isset($k[$cfg['hersteller']]) ? $k[$cfg['hersteller']] : array();
+    $paths = isset($k[$cfg['hersteller']]) ? $k[$cfg['hersteller']] : array();
+    // Numeric embeddedIds on Altherma: keep old paths first, add typed defaults.
+    // Explicit user mappings above remain authoritative.
+    if ($cfg['hersteller'] === 'onecta') {
+        foreach ($paths as $path) {
+            $typed = preg_replace('/embeddedId=(climateControl|domesticHotWaterTank)/', 'managementPointType=$1', $path);
+            if ($typed !== $path) { $paths[] = $typed; }
+        }
+    }
+    return $paths;
 }
 
 /** Die Textzuordnung "FELD=pfad" je Zeile einlesen. */
@@ -1805,6 +1819,7 @@ function wp_betriebsart($wert, $hersteller)
  */
 function wp_umrechnen($roh, $cfg)
 {
+    if ($cfg['hersteller'] === 'onecta') { $roh = wp_oc_ext_device($roh, $cfg['geraet']); }
     $werte = array();
     $wege = array();
     $digital = array('EIN' => 1, 'KOMPRESSOR' => 1, 'WWZWANG' => 1);
@@ -5167,6 +5182,10 @@ function wp_abrufen($erzwingen = false)
         // nichts Brauchbares drinsteht - der Reiter Test lebt davon, dass man
         // sich ansehen kann, was tatsaechlich gekommen ist.
         $stand['roh'] = $erg['roh'];
+        if ($cfg['hersteller'] === 'onecta') {
+            $stand['oc_zusatz_zeit'] = time();
+            $stand['oc_zusatz_geraet'] = $cfg['geraet'];
+        }
         $stand['wege'] = $u['wege'];
 
         if ($u['werte']) {
@@ -5331,6 +5350,20 @@ function wp_abrufen($erzwingen = false)
         $wp_raus = array_intersect_key($wp_raus, array_flip(wp_mqtt_signalfelder()));
     }
     wp_mqtt_senden($wp_raus);
+    // No extra cloud requests; failure of optional MQTT never changes poll success.
+    if ($cfg['hersteller'] === 'onecta' && !empty($cfg['oc_zusatz_ein'])) {
+        try {
+            $extra = array('zusatz/gueltig' => '0');
+            if ($erg['ok'] && wp_oc_ext_device($erg['roh'], $cfg['geraet'])) {
+                $extra = wp_oc_ext_map($erg['roh'], $cfg['geraet']);
+                $extra['zusatz/gueltig'] = '1';
+                $extra['zusatz/zeit'] = (string) time();
+            }
+            wp_mqtt_senden($extra);
+        } catch (Throwable $e) {
+            wp_log('Daikin-Zusatzdaten: MQTT abgebrochen (' . get_class($e) . ').', 'oc_zusatz_mqtt');
+        }
+    }
     return array((int) $erg['ok'], (string) $erg['fehler']);
 }
 
