@@ -1,69 +1,33 @@
-# MQTT-Datenpunktliste Onecta 0.9.42
+# MQTT-Datenpunkte Daikin 0.9.43
 
-Neu in 0.9.42: 101 Energie-Topics für acht Perioden, vier Bereiche und Zeitbasis.
-Vollständige Namen, Bedeutung und Loxone-Beispiele: [Energieauswertung](ONECTA-ENERGIE.md).
-Die folgenden bisherigen Topics bleiben unverändert.
-Ablehnungsgründe und API-Pausen aus 0.9.41: [ONECTA-0.9.41.md](ONECTA-0.9.41.md).
+Gemeinsame Basis: `<präfix>/Daikin/` – Groß-/Kleinschreibung beachten.
+Der alte `zusatz/`-Baum wird nicht mehr veröffentlicht.
 
-Alle folgenden Namen beginnen mit `<präfix>/zusatz/` (Vorgabe `waermepumpe/zusatz/`).
-Alle Zusatztopics sind **nicht retained**. Boolean: `1`/`0`; Zahl: Dezimalpunkt;
-Text: native API-Texte; JSON: kompakte Struktur; fehlend/ungültig: `-`.
-Gemeinsam aktivierbar im MQTT-Reiter; keine zusätzlichen Cloud-Anfragen.
-
-| Suffix | Typ | Quelle | JSON-Pfad relativ zur Quelle |
-|---|---|---|---|
-| `heizmodus` | text | heizung | `operationMode.value` |
-| `regelart` | text | heizung | `controlMode.value` |
-| `sollwertmodus` | text | heizung | `setpointMode.value` |
-| `heiz_offset` | number | heizung | `temperatureControl.value.operationModes.heating.setpoints.leavingWaterOffset.value` |
-| `kuehl_soll` | number | heizung | `temperatureControl.value.operationModes.cooling.setpoints.roomTemperature.value` |
-| `kuehl_vlsoll` | number | heizung | `temperatureControl.value.operationModes.cooling.setpoints.leavingWaterTemperature.value` |
-| `ww_ein` | bool | warmwasser | `onOffMode.value` |
-| `ww_modus` | text | warmwasser | `heatupMode.value` |
-| `ww_boost_aktiv` | bool | warmwasser | `isPowerfulModeActive.value` |
-| `ww_zeitprogramm` | bool | warmwasser | `schedule.value.modes.heating.enabled.value` |
-| `ww_naechste_aktion` | json | warmwasser | `schedule.value.nextAction` |
-| `ww_naechste_startzeit` | text | warmwasser | `schedule.value.nextAction.startTime` |
-| `ww_naechste_aktion_wert` | text | warmwasser | `schedule.value.nextAction.domesticHotWaterTemperature` |
-| `ww_naechste_wochentag` | text | warmwasser | `schedule.value.nextAction.actionPeriod` |
-| `ww_naechste_betriebsart` | text | warmwasser | `schedule.value.nextAction.operationMode` |
-| `cloud_online` | bool | geraet | `isCloudConnectionUp.value` |
-| `fehler_heizung` | bool | heizung | `isInErrorState.value` |
-| `warnung_heizung` | bool | heizung | `isInWarningState.value` |
-| `notbetrieb` | bool | heizung | `isInEmergencyState.value` |
-| `fehler_ww` | bool | warmwasser | `isInErrorState.value` |
-| `warnung_ww` | bool | warmwasser | `isInWarningState.value` |
-| `diagnose/geraetemodell` | text | geraet | `deviceModel` |
-| `diagnose/gateway_modell` | text | gateway | `modelInfo.value` |
-| `diagnose/gateway_firmware` | text | gateway | `firmwareVersion.value` |
-| `diagnose/innengeraet_modell` | text | innen | `modelInfo.value` |
-| `diagnose/innengeraet_software` | text | innen | `softwareVersion.value` |
-| `diagnose/aussengeraet_software` | text | aussen | `softwareVersion.value` |
-| `diagnose/bedienung_software` | text | bedienung | `softwareVersion.value` |
-| `energie/heizung` | energy | heizung | `consumptionData.value.electrical.heating` |
-| `energie/kuehlung` | energy | heizung | `consumptionData.value.electrical.cooling` |
-| `energie/warmwasser` | energy | warmwasser | `consumptionData.value.electrical.heating` |
-
-| Status-Suffix | Bedeutung |
+| Teilbaum | Bedeutung |
 |---|---|
-| `gueltig` | `1`: gültiger Abruf dieses Gateways; einzelne Datenpunkte dürfen fehlen. `0`: Fehlabruf, keine alten Messwerte gesendet. |
-| `zeit` | Unixzeit in Sekunden; nur bei erfolgreichem Abruf. Empfangs-Timeout zusätzlich auswerten. |
+| `heizung/` | Heizkreis einschließlich aller Sensoren, Sollwerte und Metadaten |
+| `ww/` | Warmwasser, Boost-Wunsch und tatsächlicher Boost-Status |
+| `energie/` | Rohdaten und elektrische Periodensummen; WW unter `energie/ww/` |
+| `diagnose/` | Gateway, Innengerät, Außengerät und Bedienung |
+| `geraet/` | Gerätedaten einschließlich ausdrücklich historischer Felder |
+| `faehigkeiten/` | Vorhandensein dokumentierter Merkmale |
+| `status/gueltig`, `status/zeit` | Antwort gültig und eigener Empfangszeitpunkt |
+| `befehl/` | Befehle, Quittung jeweils mit `/quittung` |
 
-Quellen: geraet = ausgewähltes Gateway-Objekt; heizung = managementPointType `climateControl`
-(embeddedId `1` in der Fixture); warmwasser = `domesticHotWaterTank` (`2`); gateway = `gateway` (`0`);
-innen = `indoorUnitHydro` (`3`); aussen = `outdoorUnit` (`4`); bedienung = `userInterface` (`5`).
-Pfade für Management Points beginnen vollständig mit `managementPoints[managementPointType=TYPE].`.
-Bei fehlender Typangabe sind die Fixture-IDs sowie alte stringbasierte IDs Rückfallkandidaten.
+Alle Daikin-Topics sind nicht retained. Einzelwerte behalten API-Namen und
+Struktur (`value`, `settable`, `values`, Grenzen und Schritte).
+Boolesche Werte: `1`/`0`; Texte wie `on`/`off`: unverändert; Zahlen: Dezimalpunkt;
+fehlende Werte: `-`; Listen: JSON mit unveränderten Indizes und null-Lücken.
+Leere oder mehrzeilige Texte werden reversibel als JSON-String kodiert.
 
-`ww_naechste_aktion` enthält die vorhandene API-Struktur; die bekannten Teile sind zusätzlich
-als einzelne Topics verfügbar. Keine Umrechnung des Wochentags in ein angenommenes Kalenderdatum.
-`energy`-Payloads sind JSON mit `einheit`, `zeitzuordnung`, `reihenfolge`, `reihen.d/w/m.werte` und
-`gueltige_werte`. Keine Momentanleistung und keine Kalenderzuordnung; Details in [ONECTA.md](ONECTA.md).
+Der [maschinenlesbare Katalog](DAIKIN-FELDER.json) benennt jeden Topic-Pfad,
+API-Quellpfad und Typ der ursprünglichen Antwort. Aktuelle Werte stehen im
+Daikin-Reiter. Die Ausgabe berücksichtigt alle 503 Einzelwerte der gespeicherten
+Response, einschließlich Metadaten, aufgeteilt in 279 Katalogtopics.
 
-Die vorhandenen Haupttopics AUSSEN, VORLAUF, RAUM, SOLL, WW, WWSOLL, WWZWANG und EIN bleiben erhalten.
-Das bestehende RUECKLAUF-Topic erhält ohne gültige individuelle Zuordnung den regulären Fehlwert,
-keine kopierte Vorlauftemperatur. Die vorhandenen Haupttopics behalten ihre bisherige Retain-Regel.
+[Alle Befehle, Nutzlasten und Umstellung von bisherigen Topics](DAIKIN.md).
+[Alle Energieperioden und Loxone-Anzeige](ONECTA-ENERGIE.md).
 
-Neue Befehle liegen unter `<präfix>/befehl/heiz_offset`, `/raum_soll`, `/heizmodus`;
-Quittung jeweils `/quittung`. Vorhandene Befehle `/sgready` und `/ww_boost` bleiben erhalten.
-Wertebereiche, Freigaben, Fehlergründe und Loxone-Beispiele: [ONECTA.md](ONECTA.md).
+In Loxone immer Gültigkeit, Empfangszeit und Empfangs-Timeout auswerten.
+`faehigkeiten=1` bedeutet vorhanden, nicht pauschal schreibbar.
+Allgemeine Haupttopics des Plugins behalten ihre bisherigen Retain-Regeln.

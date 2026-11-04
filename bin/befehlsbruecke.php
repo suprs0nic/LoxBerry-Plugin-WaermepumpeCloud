@@ -534,6 +534,10 @@ function bb_stapel(array $zeilen, array &$st, array $z, array $e, $senden, $uhr)
             bb_log_gebremst($st, 'form', 'WARN', 'Zeile in unerwarteter Form verworfen (mosquitto_sub -F).', 3600);
             continue;
         }
+        $daikinVor = $e['praefix'] . '/Daikin/befehl/';
+        if (strpos($r['thema'], $daikinVor) === 0) {
+            $r['thema'] = $vor . 'daikin/' . substr($r['thema'], strlen($daikinVor));
+        }
         if (strpos($r['thema'], $vor) !== 0) {
             $st['zaehler']['verworfen']++;
             bb_log_gebremst($st, 'fremd', 'INFO', 'Nachricht ausserhalb ' . $vor . '# verworfen.', 3600);
@@ -919,7 +923,7 @@ function bb_dienst()
         // 18.10.2026, Probe P1). Ohne -R: die Bruecke sieht jede retained Nachricht selbst (%r = 1),
         // verwirft sie und protokolliert sie (Reiter Test nennt sie).
         $kmd = array($sub, '-h', $b['host'], '-p', (string) $b['port'], '-V', 'mqttv5', '--retain-as-published',
-                     '-F', '%r %t %x', '-t', $praefix . '/befehl/#');
+                     '-F', '%r %t %x', '-t', $praefix . '/befehl/#', '-t', $praefix . '/Daikin/befehl/#');
         $rohr = array();
         $proz = @proc_open($kmd, array(0 => array('file', '/dev/null', 'r'), 1 => array('pipe', 'w'), 2 => array('pipe', 'w')),
                            $rohr, null, bb_umgebung($opt));
@@ -1004,7 +1008,7 @@ function bb_dienst()
                 $GLOBALS['bb_einst'] = $e2;
                 $e2['praefix'] = $praefix;   // die Zeilen gehoeren zum laufenden Abo
                 $senden = function ($name, $text) use ($b, $opt, $praefix, &$st) {
-                    if (!bb_mqtt_senden($b, $opt, $praefix . '/befehl/' . $name . '/quittung', $text)) {
+                    if (!bb_mqtt_senden($b, $opt, bb_thema_text($praefix, $name) . '/quittung', $text)) {
                         bb_log_gebremst($st, 'quittung', 'WARN', 'Quittung liess sich nicht senden (mosquitto_pub).', 3600);
                     }
                 };
@@ -1211,7 +1215,8 @@ function bb_waechter_lauf(array $p)
 
 function bb_thema_text($praefix, $name)
 {
-    return ($praefix !== '' ? $praefix : '<praefix>') . '/befehl/' . $name;
+    $root = ($praefix !== '' ? $praefix : '<praefix>');
+    return strpos($name, 'daikin/') === 0 ? $root . '/Daikin/befehl/' . substr($name, 7) : $root . '/befehl/' . $name;
 }
 
 /** Eine Quelle fuer Reiter, Vorlage und Musterprojekt (Entwurf 2.6). */

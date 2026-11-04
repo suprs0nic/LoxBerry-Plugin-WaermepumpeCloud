@@ -116,9 +116,9 @@ function wp_oc_energy_summary($raw, $id, $received, $configuredZone = '')
 
 function wp_oc_energy_topics(array $summary)
 {
-    $out = array('zusatz/energie/zeitbasis' => wp_oc_ext_payload($summary['zeitbasis'], 'json'));
+    $out = array('Daikin/energie/zeitbasis' => wp_oc_ext_payload($summary['zeitbasis'], 'json'));
     foreach ($summary['bereiche'] as $category => $periods) {
-        $prefix = 'zusatz/energie/' . $category;
+        $prefix = 'Daikin/energie/' . ($category === 'warmwasser' ? 'ww' : $category);
         $out[$prefix . '/auswertung'] = wp_oc_ext_payload($periods, 'json');
         foreach ($periods as $period => $data) {
             foreach (array('bekannt_kwh', 'gesamt_kwh') as $metric) {

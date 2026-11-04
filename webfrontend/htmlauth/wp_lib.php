@@ -2,6 +2,8 @@
 require_once __DIR__ . '/wp_onecta_extended.php';
 require_once __DIR__ . '/wp_onecta_limits.php';
 require_once __DIR__ . '/wp_onecta_energy.php';
+require_once __DIR__ . '/wp_daikin.php';
+require_once __DIR__ . '/wp_daikin_loxone.php';
 /**
  * Waermepumpe Cloud fuer LoxBerry - Pfade, Konfiguration, Hersteller, Vorlage
  *
@@ -641,6 +643,10 @@ function wp_vorgaben()
         'oc_raum_soll' => 0,
         'oc_heizmodus' => 0,
         'oc_energie_zeitzone' => '', // empty: use gateway metadata only, never infer from host timezone
+        'oc_daikin_schreiben' => 0,
+        'oc_daikin_zeitplan' => 0,
+        'oc_daikin_urlaub' => 0,
+        'oc_daikin_firmware' => 0,
         /* Nr. 36 b (Stufe 2): Ansagen ueber die gemeinsame Sprachausgabe. Ab Werk keine Ausgabe
          * ('aus'); die beiden Anlaesse sind an, wirken aber erst mit einer Ausgabeart. */
         'ansage_anmeldung' => 1,
@@ -2234,6 +2240,23 @@ function wp_oc_lesen($cfg)
 /** Ein Merkmal setzen. $pfad ist optional (verschachtelte Merkmale wie temperatureControl). */
 function wp_oc_setzen($cfg, $punkt, $merkmal, $wert, $pfad = '')
 {
+    // Resolve actual response IDs for legacy SG Ready and WW callers as well.
+    $device = wp_oc_ext_device(wp_stand()['roh'] ?? null, $cfg['geraet']);
+    $point = array();
+    if (in_array($punkt, array('climateControl', 'domesticHotWaterTank'), true)) {
+        $point = wp_oc_ext_point($device, $punkt, $punkt === 'climateControl' ? '1' : '2');
+    } else {
+        foreach (($device['managementPoints'] ?? array()) as $candidate) {
+            if (($candidate['embeddedId'] ?? null) === $punkt) {
+                if ($point) { return array(0, 'GERAETEBEREICH_UNEINDEUTIG'); }
+                $point = $candidate;
+            }
+        }
+    }
+    if (!is_string($point['embeddedId'] ?? null)) { return array(0, 'GERAETEBEREICH_FEHLT'); }
+    $reason = wp_daikin_patch($point, $merkmal, $pfad, $wert);
+    if ($reason !== '') { return array(0, $reason); }
+    $punkt = $point['embeddedId'];
     // Probemodus: nicht schreiben, nur melden. Siehe wp_probe().
     if (wp_probe()) { return array(1, 'PROBE'); }
     $limit_reason = wp_oc_limits_reason();
@@ -4853,7 +4876,7 @@ function wp_xml_virtual_in_http($kopf, $cmds)
         $o .= 'DestValLow="0" ';
         $o .= 'SourceValHigh="1" ';
         $o .= 'DestValHigh="1" ';
-        $o .= 'DefVal="0" ';
+        $o .= 'DefVal="' . (isset($c['default']) ? (int) $c['default'] : 0) . '" ';
         $o .= 'MinVal="' . (int) $c['min'] . '" ';
         $o .= 'MaxVal="' . (int) $c['max'] . '" ';
         /* Unit und HintText an dieser Stelle - so fuehrt es die massgebliche
@@ -5198,6 +5221,10 @@ function wp_abrufen($erzwingen = false)
             $stand['oc_zusatz_zeit'] = time();
             $stand['oc_energie_zeit'] = $stand['oc_zusatz_zeit'];
             $stand['oc_zusatz_geraet'] = $cfg['geraet'];
+            try {
+                $stand['daikin_vi_felder'] = wp_daikin_vi_inventory($stand, $cfg);
+                $stand['daikin_vi_geraet'] = $cfg['geraet'];
+            } catch (Throwable $e) { wp_log('Daikin-HTTP-Katalog konnte nicht aktualisiert werden.'); }
         }
         $stand['wege'] = $u['wege'];
 
@@ -5366,17 +5393,18 @@ function wp_abrufen($erzwingen = false)
     // No extra cloud requests; failure of optional MQTT never changes poll success.
     if ($cfg['hersteller'] === 'onecta' && !empty($cfg['oc_zusatz_ein'])) {
         try {
-            $extra = array('zusatz/gueltig' => '0');
+            $extra = array('Daikin/status/gueltig' => '0');
             if ($erg['ok'] && wp_oc_ext_device($erg['roh'], $cfg['geraet'])) {
-                $extra = wp_oc_ext_map($erg['roh'], $cfg['geraet']);
+                $extra = wp_daikin_map($erg['roh'], $cfg['geraet']);
                 $extra = array_merge($extra, wp_oc_energy_topics(wp_oc_energy_summary(
                     $erg['roh'], $cfg['geraet'], $stand['oc_energie_zeit'], $cfg['oc_energie_zeitzone'])));
-                $extra['zusatz/gueltig'] = '1';
-                $extra['zusatz/zeit'] = (string) time();
+                $extra['Daikin/status/gueltig'] = '1';
+                $extra['Daikin/status/zeit'] = (string) $stand['oc_energie_zeit'];
             }
             wp_mqtt_senden($extra);
         } catch (Throwable $e) {
             wp_log('Daikin-Zusatzdaten: MQTT abgebrochen (' . get_class($e) . ').', 'oc_zusatz_mqtt');
+            try { wp_mqtt_senden(array('Daikin/status/gueltig' => '0')); } catch (Throwable $ignored) { }
         }
     }
     return array((int) $erg['ok'], (string) $erg['fehler']);

@@ -119,7 +119,7 @@ if ($soll === '' || !hash_equals($soll, $ist)) {
     wp_ende(403, 'WP;OK=0;GRUND=TOKEN');
 }
 
-$erlaubte_aktionen = array('status', 'sgready', 'werte', 'ww_boost');
+$erlaubte_aktionen = array('status', 'sgready', 'werte', 'ww_boost', 'daikin');
 // is_array wie bei k1/k2: ?aktion[]=x waere sonst eine "Array to string
 // conversion" - unsichtbar, weil display_errors oben auf 0 steht, aber im
 // Fehlerprotokoll des Webservers bei jedem Aufruf.
@@ -161,6 +161,13 @@ if (($aktion === 'status' || $aktion === 'werte') && (int) $wp_s['zeit'] <= 0) {
 }
 
 /* ---------------- status ---------------- */
+if ($aktion === 'daikin') {
+    // Token guard above applies. Read cached data only; no cloud or write command.
+    if (empty($wp_s['oc_energie_zeit'])) { http_response_code(503); }
+    echo wp_daikin_http_line($wp_s, $cfg) . "\n";
+    exit;
+}
+
 if ($aktion === 'status') {
     echo wp_zeile($wp_s, $cfg) . "\n";
     exit;

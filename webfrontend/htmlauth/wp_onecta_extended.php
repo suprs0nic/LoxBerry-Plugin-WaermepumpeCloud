@@ -150,10 +150,14 @@ function wp_oc_ext_map($raw, $id = '')
 
 function wp_oc_ext_options()
 {
-    return array('oc_zusatz_ein' => 'Zusätzliche Daikin-Messwerte veröffentlichen',
+    return array('oc_zusatz_ein' => 'Daikin-Daten und Metadaten unter Daikin/ veröffentlichen',
         'oc_heiz_offset' => 'Heizkurvenverschiebung freigeben (−10 bis +10 K, Schritt 1)',
         'oc_raum_soll' => 'Raum-Solltemperatur freigeben (12 bis 35 °C, Gerätebereich und Schritt gelten)',
-        'oc_heizmodus' => 'Betriebsart freigeben (heating, cooling, auto)');
+        'oc_heizmodus' => 'Betriebsart freigeben (heating, cooling, auto)',
+        'oc_daikin_schreiben' => 'Daikin-Heizung und Warmwasser steuern (einschließlich Boost)',
+        'oc_daikin_zeitplan' => 'Daikin-Zeitpläne auswählen und ändern',
+        'oc_daikin_urlaub' => 'Daikin-Urlaubsmodus einstellen',
+        'oc_daikin_firmware' => 'Angebotenes Daikin-Firmwareupdate ausdrücklich starten');
 }
 
 /** State checks use current target flags; firmware blocks apply to the whole gateway. */

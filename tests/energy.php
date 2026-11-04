@@ -30,8 +30,9 @@ foreach (array('heute' => 222, 'gestern' => 78, 'diese_woche' => 77, 'letzte_woc
 }
 $topics = wp_oc_energy_topics($s);
 energy_check(count($topics) === 101, 'complete MQTT contract');
-energy_check($topics['zusatz/energie/heizung/heute/gesamt_kwh'] === '-', 'running total unavailable');
-energy_check($topics['zusatz/energie/heizung/gestern/gesamt_kwh'] === '78', 'closed MQTT value');
+energy_check(isset($topics['Daikin/energie/ww/heute/bekannt_kwh']), 'WW uses consistent Daikin subgroup');
+energy_check($topics['Daikin/energie/heizung/heute/gesamt_kwh'] === '-', 'running total unavailable');
+energy_check($topics['Daikin/energie/heizung/gestern/gesamt_kwh'] === '78', 'closed MQTT value');
 foreach ($topics as $topic => $payload) {
     energy_check(is_string($payload) && strpos($payload, "\n") === false && strlen($payload) < 12000
         && wp_mqtt_befehl($topic, $payload) === 'publish', 'safe non-retained MQTT payload ' . $topic);

@@ -1,5 +1,23 @@
 # Changelog des Forks
 
+## 0.9.43 – Daikin bündeln und vollständig abgleichen (2026-11-04)
+
+- Eigener Daikin-Reiter und gemeinsamer Topic-Baum Daikin/ mit Heizung, WW,
+  Energie, Diagnose, Gerätestatus, Fähigkeiten und Befehlen. Kein zusatz/-Publishing mehr.
+- Vollständiger Response-Katalog: 279 Topics decken alle 503 Einzelwerte und
+  Metadaten der ursprünglichen Altherma-Antwort ab; Feldbericht enthält keine privaten Werte.
+- API-Feldnamen und Typen erhalten; undokumentierte Response-Erweiterungen gekennzeichnet.
+  Fehlende dokumentierte Funktionen werden als nicht gemeldet ausgewiesen.
+- WW-Boost und alte SG-/WW-Schreibwege verwenden tatsächliche Management-Point-IDs.
+  Zentraler Abgleich dokumentierter Pfade, settable, Enumeration, Grenzen und Schritte.
+- Direkte Heizung/WW-Befehle, dynamischer WW-Sollwert, separate Plan-/Urlaubs-/Firmwarefreigaben.
+  Dokumentierte PATCH/POST/PUT-Endpunkte, vollständige Plan-IDs, Schreibschutz und Planmetadaten geprüft.
+- Retain-Verwerfen und Quittungen im neuen Befehlsbaum; Loxone-Vorlagen angepasst.
+  Bisherige allgemeine Haupttopics und Befehle bleiben kompatibel.
+- Virtuelle HTTP-Eingänge als VI_Daikin.xml und optionale Metadatenvorlage direkt
+  herunterladen. Tokenschutz, gespeicherter Stand ohne Cloudabruf, explizite Fehlwerte.
+- Vollständige anonymisierte Teststruktur, neue Offline- und Transporttests sowie Migrationsanleitung.
+
 ## 0.9.42 - Verständliche Energieauswertung (2026-11-02)
 
 - Verbrauchstabelle für Heizung, Kühlung, Warmwasser und deren Summe: heute/gestern,

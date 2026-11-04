@@ -37,6 +37,14 @@ $wp_ohne_sperre = 'Die Sperrminute gilt je Name UND Wert: Sperre, Normalbetrieb,
     . 'abprallen, die Waermepumpe liefe weiter; ebenso Warmwasser ein, aus, ein. Das Plugin bremst selbst: eine Stufe, die '
     . 'schon gilt, geht nicht hinaus (X-7, UNVERAENDERT), derselbe Warmwasser-Wert binnen 60 s ebenso nicht, ein '
     . 'gescheiterter Befehl nur nach der Wiederholregel (Entwurf wp E2).';
+$wp_daikin_befehle = array();
+foreach (wp_daikin_commands() as $wp_d_name => $wp_d_shape) {
+    $wp_daikin_befehle['daikin/' . $wp_d_name] = array_merge($wp_d_shape, array(
+        'eingreifend' => true, 'sperre_s' => 0,
+        'begruendung' => 'Gemeinsame persistente Daikin-Befehlsbremse und erneuter Abruf vor dem nächsten Befehl.',
+        'titel' => 'Daikin ' . $wp_d_name . ' (MQTT)', 'kachel' => 'BEFEHL.K_WW', 'quittung' => 'ausgefuehrt',
+        'tun' => function ($w, $t) use ($wp_d_name) { return wp_daikin_command($wp_d_name, $w); }));
+}
 return array(
     'fassung' => 1,
     'linie'   => 'waermepumpe',
@@ -49,7 +57,7 @@ return array(
     'protokoll' => function ($stufe, $text) {
         wp_log('Befehlsbruecke ' . ($stufe === 'INFO' ? '' : $stufe . ': ') . $text);
     },
-    'befehle' => array(
+    'befehle' => array_merge($wp_daikin_befehle, array(
         'heiz_offset' => array('art' => 'ganz', 'min' => -10, 'max' => 10, 'eingreifend' => true,
             'titel' => 'Daikin Heizkurvenverschiebung (MQTT)', 'kachel' => 'BEFEHL.K_SG',
             'quittung' => 'ausgefuehrt',
@@ -75,5 +83,5 @@ return array(
                             'tun' => function ($w, $t) {
                                 return wp_befehl_bruecke(wp_befehl_ausfuehren('ww_boost', array('ein' => (string) $w), 'mqtt'));
                             }),
-    ),
+    )),
 );

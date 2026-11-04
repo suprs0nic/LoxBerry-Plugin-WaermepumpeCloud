@@ -1,14 +1,12 @@
 # LoxBerry-Plugin Wärmepumpe
 
-> **Fork-Testversion 0.9.42: Daikin Onecta erweitert.** Zusätzliche MQTT-Daten,
-> kWh-Rohreihen, Diagnose und separat freigebbare Steuerbefehle. Standardmäßig aus.
-> Neu: verständliche Verbrauchstabelle und MQTT-Periodensummen mit sichtbaren Datenlücken.
-> [Energieverbrauch und Loxone](docs/ONECTA-ENERGIE.md) ·
-> [API-Pausen und Schutzprüfungen aus 0.9.41](docs/ONECTA-0.9.41.md).
-> [Aktivierung, Upgrade und Loxone](docs/ONECTA.md) ·
-> [MQTT-Datenpunktliste](docs/MQTT-ONECTA.md) · [Prüfbericht](docs/TESTS.md) ·
-> [Changelog](CHANGELOG.md). Keine produktive Installation oder Live-Schreibtests ausgeführt.
-> Grundlage dieses Entwicklungsstands ist Fork-Version 0.9.39; historische Releasehinweise unten bleiben erhalten.
+> **Fork-Testversion 0.9.43: eigener Daikin-Bereich.** Heizung, Warmwasser,
+> Energie, Diagnose und vollständige Response-Metadaten unter `Daikin/`.
+> [Aktivierung, Migration und alle Befehle](docs/DAIKIN.md) ·
+> [Feldabgleich](docs/DAIKIN-FELDER.json) · [Energie](docs/ONECTA-ENERGIE.md) ·
+> [Prüfbericht](docs/TESTS.md) · [Changelog](CHANGELOG.md).
+> Alte `zusatz/`-Topics werden nicht mehr gesendet. Neu eingeführte Freigaben sind aus.
+> Keine produktive Installation oder Cloud-Schreibtests ausgeführt.
 
 
 Bindet moderne Wärmepumpen an den Miniserver an und übersetzt **SG-Ready-Zustände

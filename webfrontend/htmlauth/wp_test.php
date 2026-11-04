@@ -647,16 +647,21 @@ function wp_pruefungen()
     }
 
     if ($cfg['hersteller'] === 'onecta') {
-        $oc_values = wp_oc_ext_map(isset($stand['roh']) ? $stand['roh'] : null, $cfg['geraet']);
+        try { $oc_values = wp_daikin_map(isset($stand['roh']) ? $stand['roh'] : null, $cfg['geraet']); }
+        catch (Throwable $e) { $oc_values = array(); }
         $oc_count = count(array_filter($oc_values, function ($v) { return $v !== '-'; }));
-        $z[] = wp_pruefzeile($oc_count ? 1 : -1, 'Daikin-Zusatzdaten (lokaler letzter Abruf)',
+        $z[] = wp_pruefzeile($oc_count ? 1 : -1, 'Daikin-Katalog (lokaler letzter Abruf)',
             $oc_count . ' von ' . count($oc_values) . ' Datenpunkten vorhanden; MQTT '
             . (empty($cfg['oc_zusatz_ein']) ? 'deaktiviert' : 'aktiviert') . '. Keine zusätzliche Cloud-Anfrage.');
-        $z[] = wp_pruefzeile(-1, 'Daikin-Zusatzsteuerung',
+        $z[] = wp_pruefzeile(-1, 'Daikin-Steuerung',
             'Freigaben: Offset ' . (empty($cfg['oc_heiz_offset']) ? 'aus' : 'ein')
             . ', Raum-Soll ' . (empty($cfg['oc_raum_soll']) ? 'aus' : 'ein')
             . ', Betriebsart ' . (empty($cfg['oc_heizmodus']) ? 'aus' : 'ein')
-            . '. Kein Schreibtest. Energiedaten ohne verifizierte Kalenderzuordnung.');
+            . ', Heizung/WW ' . (empty($cfg['oc_daikin_schreiben']) ? 'aus' : 'ein')
+            . ', Zeitplan ' . (empty($cfg['oc_daikin_zeitplan']) ? 'aus' : 'ein')
+            . ', Urlaub ' . (empty($cfg['oc_daikin_urlaub']) ? 'aus' : 'ein')
+            . ', Firmware ' . (empty($cfg['oc_daikin_firmware']) ? 'aus' : 'ein')
+            . '. Kein Schreibtest. Felder, Energie und Befehle im Reiter Daikin.');
     }
     return $z;
 }

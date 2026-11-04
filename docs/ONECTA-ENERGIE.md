@@ -1,6 +1,6 @@
-# Energieverbrauch mit Onecta 0.9.42
+# Energieverbrauch mit Onecta 0.9.43
 
-Im Reiter **MQTT → Daikin Onecta** steht eine Verbrauchstabelle für Heizung,
+Im Reiter **Daikin** steht eine Verbrauchstabelle für Heizung,
 Kühlung und Warmwasser sowie deren Summe. Angezeigt wird elektrische Energie
 in **kWh**, keine momentane Leistung und keine erzeugte Wärme. Eine Arbeitszahl
 oder ein COP lässt sich daraus allein nicht bestimmen.
@@ -32,7 +32,7 @@ gelieferten Zeitfenster hinaus.
 
 Das Plugin speichert den eigenen Empfangszeitpunkt zusammen mit der Antwort.
 Eine gültige Gateway-Zeitzone hat Vorrang. Meldet das Gateway keine, kann im
-MQTT-Reiter die bekannte **Anlagenzeitzone** eingetragen werden, beispielsweise
+Daikin-Reiter die bekannte **Anlagenzeitzone** eingetragen werden, beispielsweise
 `Europe/Vienna` oder `Europe/Berlin`. Leer bedeutet: keine Ersatzannahme.
 Die vorliegende ursprüngliche Altherma-Antwort enthält keine Gateway-Zeitzone.
 
@@ -51,13 +51,13 @@ Befehlsvalidierung verlangt weiterhin einen erneuten Abruf.
 
 ## MQTT und Loxone
 
-„Zusätzliche Daikin-Messwerte veröffentlichen“ aktiviert auch die Energieauswertung.
+„Daikin-Daten und Metadaten unter Daikin/ veröffentlichen“ aktiviert auch die Energieauswertung.
 Sie nutzt denselben regulären Abruf und verursacht **keine zusätzlichen Cloud-Aufrufe**.
 Es kommen 101 nicht gespeicherte (nicht retained) MQTT-Nachrichten pro erfolgreichem
-Abruf hinzu. Bestehende Rohreihen-Topics und Hauptmesswerte bleiben unverändert.
+Abruf hinzu. Rohreihen stehen ebenfalls unter Daikin/energie; allgemeine Hauptmesswerte bleiben erhalten.
 
-Basis: `<präfix>/zusatz/energie/`, standardmäßig `waermepumpe/zusatz/energie/`.
-Bereiche: `heizung`, `kuehlung`, `warmwasser`, `gesamt`.
+Basis: `<präfix>/Daikin/energie/`, standardmäßig `waermepumpe/Daikin/energie/`.
+Bereiche: `heizung`, `kuehlung`, `ww`, `gesamt`.
 Perioden: `heute`, `gestern`, `diese_woche`, `letzte_woche`, `dieser_monat`,
 `letzter_monat`, `dieses_jahr`, `letztes_jahr`.
 
@@ -74,10 +74,10 @@ und erwarteter Werte, Abdeckung, Abschlussstatus und Grund.
 
 Für eine einfache Verbrauchsanzeige in Loxone:
 
-1. `<präfix>/zusatz/energie/heizung/heute/bekannt_kwh` als Tageszwischenstand anzeigen.
+1. `<präfix>/Daikin/energie/heizung/heute/bekannt_kwh` als Tageszwischenstand anzeigen.
 2. Für einen vollständigen Vortag `.../heizung/gestern/gesamt_kwh` zusammen mit
    `.../heizung/gestern/vollstaendig` auswerten.
-3. Zusätzlich `<präfix>/zusatz/gueltig`, `<präfix>/zusatz/zeit` und Empfangs-Timeout
+3. Zusätzlich `<präfix>/Daikin/status/gueltig`, `<präfix>/Daikin/status/zeit` und Empfangs-Timeout
    auswerten. Bei fehlgeschlagenem Abruf werden keine alten Energiezahlen neu gesendet.
 4. `-` darf nicht als Nullverbrauch interpretiert werden. Je nach Loxone-Eingang
    die Anzeige über den Gültigkeitsstatus sperren.
@@ -97,9 +97,9 @@ Die am 02.11.2026 gelesene offizielle Daikin-Dokumentation beschreibt:
 | `m` | 24 | 0–11: letztes Jahr Januar–Dezember | 12–23: dieses Jahr |
 
 Tages-, Wochen- und Monatsreihen überlappen und werden **nie untereinander addiert**.
-Jede Auswertung nutzt ausschließlich ihre passende Reihe. Die vorhandenen Rohreihen
-behalten aus Kompatibilitätsgründen ihr bisheriges Format einschließlich
-`zeitzuordnung: unbekannt`; die neue Interpretation steht in separaten Topics.
+Jede Auswertung nutzt ausschließlich ihre passende Reihe. Die Rohreihen stehen mit ihren API-Namen unter
+`Daikin/energie/heizung/consumptionData/` und `Daikin/energie/ww/consumptionData/`.
+Die Interpretation steht getrennt in den Periodentopics.
 Abweichende Reihenlängen werden in der Auswertung abgelehnt, in den Rohreihen
 weiter unverändert transportiert. `null`, negative/ungültige Werte und andere
 Einheiten werden nicht in erfundene Verbrauchswerte umgewandelt.

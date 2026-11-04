@@ -50,7 +50,7 @@ if ($wp_home !== '' && file_exists($wp_home . '/libs/phplib/loxberry_system.php'
  * und in den sechs Flaechen-ids. Wer einen Reiter ergaenzt und eine davon
  * vergisst, bekommt keinen Fehler, sondern eine Seite, die nach jedem
  * Absenden auf Einstellungen zurueckspringt. */
-$wp_reiter_ids = array('settings', 'sgready', 'mqtt', 'loxone', 'test', 'log');
+$wp_reiter_ids = array('settings', 'sgready', 'mqtt', 'daikin', 'loxone', 'test', 'log');
 $wp_muster = '/^tab-(' . implode('|', $wp_reiter_ids) . ')$/';
 $wp_tab = preg_match($wp_muster, (string) (isset($_POST['activetab']) ? $_POST['activetab'] : ''))
     ? (string) $_POST['activetab'] : 'tab-settings';
@@ -192,7 +192,9 @@ $wp_geh = wp_geheim();
  * ================================================================== */
 /* ================= Vorlage herunterladen ================= */
 if ($wp_post && isset($_POST['download'])) {
-    $v = ($_POST['download'] === 'xml_out') ? wp_vorlage_aus() : wp_vorlage_ein();
+    if (in_array($_POST['download'], array('xml_daikin', 'xml_daikin_meta'), true)) {
+        $v = wp_daikin_vorlage(wp_stand(), $wp_cfg, wp_endpunkt('daikin'), $_POST['download'] === 'xml_daikin_meta');
+    } else { $v = ($_POST['download'] === 'xml_out') ? wp_vorlage_aus() : wp_vorlage_ein(); }
     header('Content-Type: application/x-download');
     // Die Anfuehrungszeichen um den Dateinamen sind Pflicht - ohne sie bricht
     // jeder Name, der ein Leerzeichen enthaelt.
@@ -674,7 +676,7 @@ if ($wp_post && isset($_POST['save_onecta_extended'])) {
     elseif (wp_config_write(array_merge($wp_oc_cfg, array('oc_energie_zeitzone' => $wp_oc_zone_input)))) { $wp_meldungen[] = wp_t('EINST.GESPEICHERT'); }
     else { $wp_fehler[] = 'Daikin-Einstellungen konnten nicht gespeichert werden.'; }
     $wp_cfg = wp_config();
-    $wp_tab = 'tab-mqtt';
+    $wp_tab = 'tab-daikin';
 }
 
 /* ================= SG Ready speichern ================= */
@@ -1094,6 +1096,8 @@ details > summary { cursor: pointer; font-weight: 600; color: #4f7d17; margin: 8
      Uebereinstimmung mit Positivliste und Bereichen haelt die Pruefzeile im
      Reiter Test weiter nach - jetzt gegen die ausgeschriebene Leiste. -->
 <div class="sm-tabs">
+    <a class="sm-tab<?= $wp_tab === 'tab-daikin' ? ' sm-active' : '' ?>" data-ziel="tab-daikin"
+       href="index.php?form=daikin"><?= wp_e(wp_t('REITER.DAIKIN')) ?></a>
 	<a class="sm-tab<?= $wp_tab === 'tab-settings' ? ' sm-active' : '' ?>" data-ziel="tab-settings"
 	   href="index.php?form=settings"><?= wp_e(wp_t('REITER.EINSTELLUNGEN')) ?></a>
 	<a class="sm-tab<?= $wp_tab === 'tab-sgready' ? ' sm-active' : '' ?>" data-ziel="tab-sgready"
@@ -1108,6 +1112,10 @@ details > summary { cursor: pointer; font-weight: 600; color: #4f7d17; margin: 8
 	   href="index.php?form=log"><?= wp_e(wp_t('REITER.LOG')) ?></a>
 </div>
 
+<div class="sm-seite<?= $wp_tab === 'tab-daikin' ? ' sm-active' : '' ?>" id="tab-daikin">
+<?php if ($wp_cfg['hersteller'] === 'onecta') { include __DIR__ . '/wp_daikin_ui.php'; }
+else { ?><p>Die Daikin-Ansicht ist bei Hersteller Daikin Onecta verfügbar.</p><?php } ?>
+</div>
 <!-- ================= Reiter: Einstellungen ================= -->
 <div class="sm-seite<?= $wp_tab === 'tab-settings' ? ' sm-active' : '' ?>" id="tab-settings">
 <div class="sm-hinweis"><?= wp_t('EINST.WAS_IST_DAS') ?></div>
@@ -1656,7 +1664,7 @@ if (!$wp_verlauf) { ?>
   <button data-role="none" class="sm-btn sm-b-aktion" type="submit"><?= wp_e(wp_t('ALLG.SPEICHERN')) ?></button>
 </div>
 </form>
-<?php if ($wp_cfg['hersteller'] === 'onecta') { include __DIR__ . '/wp_onecta_extended_ui.php'; } ?>
+
 <h2><?= wp_e(wp_t('MQTT.H_TITEL')) ?></h2>
 <?php /* Der frueher hier eingeschobene Zweitpruefblock (wp_hs_autostart) ist
    entfallen: wp_mqtt_zustand() prueft seit 0.9.6 den richtigen Schluessel

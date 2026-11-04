@@ -1,0 +1,1683 @@
+{
+    "version": "0.9.43",
+    "documentation_checked": "2026-11-04",
+    "catalogue_topics": 279,
+    "response_leaves_checked": 503,
+    "lossless_response_coverage": true,
+    "fields": [
+        {
+            "topic": "Daikin/geraet/_id",
+            "api_path": "_id",
+            "type": "text",
+            "feature_documented": false
+        },
+        {
+            "topic": "Daikin/geraet/type",
+            "api_path": "type",
+            "type": "text",
+            "feature_documented": false
+        },
+        {
+            "topic": "Daikin/geraet/deviceModel",
+            "api_path": "deviceModel",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/geraet/isCloudConnectionUp/settable",
+            "api_path": "isCloudConnectionUp.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/geraet/isCloudConnectionUp/value",
+            "api_path": "isCloudConnectionUp.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/geraet/embeddedId",
+            "api_path": "embeddedId",
+            "type": "text",
+            "feature_documented": false
+        },
+        {
+            "topic": "Daikin/geraet/timestamp",
+            "api_path": "timestamp",
+            "type": "text",
+            "feature_documented": false
+        },
+        {
+            "topic": "Daikin/geraet/id",
+            "api_path": "id",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/embeddedId",
+            "api_path": "managementPoints[embeddedId=0].embeddedId",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/managementPointType",
+            "api_path": "managementPoints[embeddedId=0].managementPointType",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/managementPointCategory",
+            "api_path": "managementPoints[embeddedId=0].managementPointCategory",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/firmwareVersion/settable",
+            "api_path": "managementPoints[embeddedId=0].firmwareVersion.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/firmwareVersion/value",
+            "api_path": "managementPoints[embeddedId=0].firmwareVersion.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/isFirmwareUpdateSupported/settable",
+            "api_path": "managementPoints[embeddedId=0].isFirmwareUpdateSupported.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/isFirmwareUpdateSupported/value",
+            "api_path": "managementPoints[embeddedId=0].isFirmwareUpdateSupported.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/serialNumber/settable",
+            "api_path": "managementPoints[embeddedId=0].serialNumber.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/serialNumber/value",
+            "api_path": "managementPoints[embeddedId=0].serialNumber.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/modelInfo/settable",
+            "api_path": "managementPoints[embeddedId=0].modelInfo.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/modelInfo/value",
+            "api_path": "managementPoints[embeddedId=0].modelInfo.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/ipAddress/settable",
+            "api_path": "managementPoints[embeddedId=0].ipAddress.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/ipAddress/value",
+            "api_path": "managementPoints[embeddedId=0].ipAddress.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/macAddress/settable",
+            "api_path": "managementPoints[embeddedId=0].macAddress.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/macAddress/value",
+            "api_path": "managementPoints[embeddedId=0].macAddress.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/errorCode/settable",
+            "api_path": "managementPoints[embeddedId=0].errorCode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/errorCode/value",
+            "api_path": "managementPoints[embeddedId=0].errorCode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/isInErrorState/settable",
+            "api_path": "managementPoints[embeddedId=0].isInErrorState.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/gateway/isInErrorState/value",
+            "api_path": "managementPoints[embeddedId=0].isInErrorState.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/embeddedId",
+            "api_path": "managementPoints[embeddedId=1].embeddedId",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/managementPointType",
+            "api_path": "managementPoints[embeddedId=1].managementPointType",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/managementPointSubType",
+            "api_path": "managementPoints[embeddedId=1].managementPointSubType",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/managementPointCategory",
+            "api_path": "managementPoints[embeddedId=1].managementPointCategory",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/name/settable",
+            "api_path": "managementPoints[embeddedId=1].name.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/name/value",
+            "api_path": "managementPoints[embeddedId=1].name.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/name/maxLength",
+            "api_path": "managementPoints[embeddedId=1].name.maxLength",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/errorCode/settable",
+            "api_path": "managementPoints[embeddedId=1].errorCode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/errorCode/value",
+            "api_path": "managementPoints[embeddedId=1].errorCode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/holidayMode/settable",
+            "api_path": "managementPoints[embeddedId=1].holidayMode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/holidayMode/ref",
+            "api_path": "managementPoints[embeddedId=1].holidayMode.ref",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/holidayMode/value/enabled",
+            "api_path": "managementPoints[embeddedId=1].holidayMode.value.enabled",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/holidayMode/value/startDate",
+            "api_path": "managementPoints[embeddedId=1].holidayMode.value.startDate",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/holidayMode/value/endDate",
+            "api_path": "managementPoints[embeddedId=1].holidayMode.value.endDate",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/isHolidayModeActive/settable",
+            "api_path": "managementPoints[embeddedId=1].isHolidayModeActive.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/isHolidayModeActive/value",
+            "api_path": "managementPoints[embeddedId=1].isHolidayModeActive.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/isInErrorState/settable",
+            "api_path": "managementPoints[embeddedId=1].isInErrorState.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/isInErrorState/value",
+            "api_path": "managementPoints[embeddedId=1].isInErrorState.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/isInWarningState/settable",
+            "api_path": "managementPoints[embeddedId=1].isInWarningState.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/isInWarningState/value",
+            "api_path": "managementPoints[embeddedId=1].isInWarningState.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/isInInstallerState/settable",
+            "api_path": "managementPoints[embeddedId=1].isInInstallerState.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/isInInstallerState/value",
+            "api_path": "managementPoints[embeddedId=1].isInInstallerState.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/isInEmergencyState/settable",
+            "api_path": "managementPoints[embeddedId=1].isInEmergencyState.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/isInEmergencyState/value",
+            "api_path": "managementPoints[embeddedId=1].isInEmergencyState.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/onOffMode/settable",
+            "api_path": "managementPoints[embeddedId=1].onOffMode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/onOffMode/values",
+            "api_path": "managementPoints[embeddedId=1].onOffMode.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/onOffMode/value",
+            "api_path": "managementPoints[embeddedId=1].onOffMode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/setpointMode/settable",
+            "api_path": "managementPoints[embeddedId=1].setpointMode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/setpointMode/values",
+            "api_path": "managementPoints[embeddedId=1].setpointMode.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/setpointMode/value",
+            "api_path": "managementPoints[embeddedId=1].setpointMode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/controlMode/settable",
+            "api_path": "managementPoints[embeddedId=1].controlMode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/controlMode/values",
+            "api_path": "managementPoints[embeddedId=1].controlMode.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/controlMode/value",
+            "api_path": "managementPoints[embeddedId=1].controlMode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/heizung/consumptionData/ref",
+            "api_path": "managementPoints[embeddedId=1].consumptionData.ref",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/heizung/consumptionData/settable",
+            "api_path": "managementPoints[embeddedId=1].consumptionData.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/heizung/consumptionData/value/electrical/heating/d",
+            "api_path": "managementPoints[embeddedId=1].consumptionData.value.electrical.heating.d",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/heizung/consumptionData/value/electrical/heating/w",
+            "api_path": "managementPoints[embeddedId=1].consumptionData.value.electrical.heating.w",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/heizung/consumptionData/value/electrical/heating/m",
+            "api_path": "managementPoints[embeddedId=1].consumptionData.value.electrical.heating.m",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/heizung/consumptionData/value/electrical/cooling/d",
+            "api_path": "managementPoints[embeddedId=1].consumptionData.value.electrical.cooling.d",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/heizung/consumptionData/value/electrical/cooling/w",
+            "api_path": "managementPoints[embeddedId=1].consumptionData.value.electrical.cooling.w",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/heizung/consumptionData/value/electrical/cooling/m",
+            "api_path": "managementPoints[embeddedId=1].consumptionData.value.electrical.cooling.m",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/heizung/consumptionData/value/electrical/unit",
+            "api_path": "managementPoints[embeddedId=1].consumptionData.value.electrical.unit",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/sensoryData/settable",
+            "api_path": "managementPoints[embeddedId=1].sensoryData.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/sensoryData/ref",
+            "api_path": "managementPoints[embeddedId=1].sensoryData.ref",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/sensoryData/value/roomTemperature/settable",
+            "api_path": "managementPoints[embeddedId=1].sensoryData.value.roomTemperature.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/sensoryData/value/roomTemperature/value",
+            "api_path": "managementPoints[embeddedId=1].sensoryData.value.roomTemperature.value",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/sensoryData/value/outdoorTemperature/settable",
+            "api_path": "managementPoints[embeddedId=1].sensoryData.value.outdoorTemperature.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/sensoryData/value/outdoorTemperature/value",
+            "api_path": "managementPoints[embeddedId=1].sensoryData.value.outdoorTemperature.value",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/sensoryData/value/leavingWaterTemperature/settable",
+            "api_path": "managementPoints[embeddedId=1].sensoryData.value.leavingWaterTemperature.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/sensoryData/value/leavingWaterTemperature/value",
+            "api_path": "managementPoints[embeddedId=1].sensoryData.value.leavingWaterTemperature.value",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/ref",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.ref",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/settable",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/heating/setpoints/roomTemperature/maxValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.heating.setpoints.roomTemperature.maxValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/heating/setpoints/roomTemperature/minValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.heating.setpoints.roomTemperature.minValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/heating/setpoints/roomTemperature/stepValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.heating.setpoints.roomTemperature.stepValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/heating/setpoints/roomTemperature/settable",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.heating.setpoints.roomTemperature.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/heating/setpoints/roomTemperature/value",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.heating.setpoints.roomTemperature.value",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/heating/setpoints/leavingWaterOffset/maxValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.heating.setpoints.leavingWaterOffset.maxValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/heating/setpoints/leavingWaterOffset/minValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.heating.setpoints.leavingWaterOffset.minValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/heating/setpoints/leavingWaterOffset/stepValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.heating.setpoints.leavingWaterOffset.stepValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/heating/setpoints/leavingWaterOffset/settable",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.heating.setpoints.leavingWaterOffset.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/heating/setpoints/leavingWaterOffset/value",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.heating.setpoints.leavingWaterOffset.value",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/cooling/setpoints/roomTemperature/maxValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.cooling.setpoints.roomTemperature.maxValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/cooling/setpoints/roomTemperature/minValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.cooling.setpoints.roomTemperature.minValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/cooling/setpoints/roomTemperature/stepValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.cooling.setpoints.roomTemperature.stepValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/cooling/setpoints/roomTemperature/settable",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.cooling.setpoints.roomTemperature.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/cooling/setpoints/roomTemperature/value",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.cooling.setpoints.roomTemperature.value",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/cooling/setpoints/leavingWaterTemperature/maxValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.cooling.setpoints.leavingWaterTemperature.maxValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/cooling/setpoints/leavingWaterTemperature/minValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.cooling.setpoints.leavingWaterTemperature.minValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/cooling/setpoints/leavingWaterTemperature/stepValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.cooling.setpoints.leavingWaterTemperature.stepValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/cooling/setpoints/leavingWaterTemperature/settable",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.cooling.setpoints.leavingWaterTemperature.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/cooling/setpoints/leavingWaterTemperature/value",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.cooling.setpoints.leavingWaterTemperature.value",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/auto/setpoints/roomTemperature/maxValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.auto.setpoints.roomTemperature.maxValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/auto/setpoints/roomTemperature/minValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.auto.setpoints.roomTemperature.minValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/auto/setpoints/roomTemperature/stepValue",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.auto.setpoints.roomTemperature.stepValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/auto/setpoints/roomTemperature/settable",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.auto.setpoints.roomTemperature.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/temperatureControl/value/operationModes/auto/setpoints/roomTemperature/value",
+            "api_path": "managementPoints[embeddedId=1].temperatureControl.value.operationModes.auto.setpoints.roomTemperature.value",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/operationMode/settable",
+            "api_path": "managementPoints[embeddedId=1].operationMode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/operationMode/values",
+            "api_path": "managementPoints[embeddedId=1].operationMode.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/operationMode/value",
+            "api_path": "managementPoints[embeddedId=1].operationMode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/ref",
+            "api_path": "managementPoints[embeddedId=1].schedule.ref",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/currentMode/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.currentMode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/currentMode/values",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.currentMode.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/currentMode/value",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.currentMode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/nextAction",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.nextAction",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/currentSchedule/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.currentSchedule.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/currentSchedule/values",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.currentSchedule.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/currentSchedule/value",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.currentSchedule.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/enabled/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.enabled.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/enabled/value",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.enabled.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/meta/minIntervalBetweenActions",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.meta.minIntervalBetweenActions",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/meta/maxSchedules",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.meta.maxSchedules",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/meta/maxActionsPerActionPeriod",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.meta.maxActionsPerActionPeriod",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/meta/consecutiveActionsAllowed",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.meta.consecutiveActionsAllowed",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/meta/actionTypes/roomTemperature/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.meta.actionTypes.roomTemperature.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/meta/actionTypes/roomTemperature/maxValue",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.meta.actionTypes.roomTemperature.maxValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/meta/actionTypes/roomTemperature/minValue",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.meta.actionTypes.roomTemperature.minValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/meta/actionTypes/roomTemperature/stepValue",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.meta.actionTypes.roomTemperature.stepValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/meta/enabledIsModeDependent",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.meta.enabledIsModeDependent",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/0/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.0.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/0/name/value",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.0.name.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/0/name/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.0.name.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/0/meta/isReadOnly",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.0.meta.isReadOnly",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/0/meta/actionPeriods",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.0.meta.actionPeriods",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/0/actions",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.0.actions",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/1/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.1.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/1/name/value",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.1.name.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/1/name/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.1.name.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/1/meta/isReadOnly",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.1.meta.isReadOnly",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/1/meta/actionPeriods",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.1.meta.actionPeriods",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/1/actions",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.1.actions",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/2/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.2.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/2/name/value",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.2.name.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/2/name/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.2.name.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/2/meta/isReadOnly",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.2.meta.isReadOnly",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/2/meta/actionPeriods",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.2.meta.actionPeriods",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/heating/schedules/2/actions",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.heating.schedules.2.actions",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/currentSchedule/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.currentSchedule.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/currentSchedule/values",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.currentSchedule.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/currentSchedule/value",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.currentSchedule.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/enabled/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.enabled.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/enabled/value",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.enabled.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/meta/minIntervalBetweenActions",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.meta.minIntervalBetweenActions",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/meta/maxSchedules",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.meta.maxSchedules",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/meta/maxActionsPerActionPeriod",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.meta.maxActionsPerActionPeriod",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/meta/consecutiveActionsAllowed",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.meta.consecutiveActionsAllowed",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/meta/actionTypes/roomTemperature/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.meta.actionTypes.roomTemperature.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/meta/actionTypes/roomTemperature/maxValue",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.meta.actionTypes.roomTemperature.maxValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/meta/actionTypes/roomTemperature/minValue",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.meta.actionTypes.roomTemperature.minValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/meta/actionTypes/roomTemperature/stepValue",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.meta.actionTypes.roomTemperature.stepValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/meta/enabledIsModeDependent",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.meta.enabledIsModeDependent",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/schedules/0/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.schedules.0.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/schedules/0/name/value",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.schedules.0.name.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/schedules/0/name/settable",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.schedules.0.name.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/schedules/0/meta/isReadOnly",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.schedules.0.meta.isReadOnly",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/schedules/0/meta/actionPeriods",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.schedules.0.meta.actionPeriods",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/schedule/value/modes/cooling/schedules/0/actions",
+            "api_path": "managementPoints[embeddedId=1].schedule.value.modes.cooling.schedules.0.actions",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/heizung/targetTemperature/settable",
+            "api_path": "managementPoints[embeddedId=1].targetTemperature.settable",
+            "type": "bool",
+            "feature_documented": false
+        },
+        {
+            "topic": "Daikin/heizung/targetTemperature/value",
+            "api_path": "managementPoints[embeddedId=1].targetTemperature.value",
+            "type": "number",
+            "feature_documented": false
+        },
+        {
+            "topic": "Daikin/heizung/targetTemperature/maxValue",
+            "api_path": "managementPoints[embeddedId=1].targetTemperature.maxValue",
+            "type": "number",
+            "feature_documented": false
+        },
+        {
+            "topic": "Daikin/heizung/targetTemperature/minValue",
+            "api_path": "managementPoints[embeddedId=1].targetTemperature.minValue",
+            "type": "number",
+            "feature_documented": false
+        },
+        {
+            "topic": "Daikin/heizung/targetTemperature/stepValue",
+            "api_path": "managementPoints[embeddedId=1].targetTemperature.stepValue",
+            "type": "number",
+            "feature_documented": false
+        },
+        {
+            "topic": "Daikin/ww/embeddedId",
+            "api_path": "managementPoints[embeddedId=2].embeddedId",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/managementPointCategory",
+            "api_path": "managementPoints[embeddedId=2].managementPointCategory",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/managementPointType",
+            "api_path": "managementPoints[embeddedId=2].managementPointType",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/name/settable",
+            "api_path": "managementPoints[embeddedId=2].name.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/name/value",
+            "api_path": "managementPoints[embeddedId=2].name.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/name/maxLength",
+            "api_path": "managementPoints[embeddedId=2].name.maxLength",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/errorCode/settable",
+            "api_path": "managementPoints[embeddedId=2].errorCode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/errorCode/value",
+            "api_path": "managementPoints[embeddedId=2].errorCode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/isHolidayModeActive/settable",
+            "api_path": "managementPoints[embeddedId=2].isHolidayModeActive.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/isHolidayModeActive/value",
+            "api_path": "managementPoints[embeddedId=2].isHolidayModeActive.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/isInErrorState/settable",
+            "api_path": "managementPoints[embeddedId=2].isInErrorState.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/isInErrorState/value",
+            "api_path": "managementPoints[embeddedId=2].isInErrorState.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/isInWarningState/settable",
+            "api_path": "managementPoints[embeddedId=2].isInWarningState.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/isInWarningState/value",
+            "api_path": "managementPoints[embeddedId=2].isInWarningState.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/isInInstallerState/settable",
+            "api_path": "managementPoints[embeddedId=2].isInInstallerState.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/isInInstallerState/value",
+            "api_path": "managementPoints[embeddedId=2].isInInstallerState.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/isInEmergencyState/settable",
+            "api_path": "managementPoints[embeddedId=2].isInEmergencyState.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/isInEmergencyState/value",
+            "api_path": "managementPoints[embeddedId=2].isInEmergencyState.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/isPowerfulModeActive/settable",
+            "api_path": "managementPoints[embeddedId=2].isPowerfulModeActive.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/isPowerfulModeActive/value",
+            "api_path": "managementPoints[embeddedId=2].isPowerfulModeActive.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/onOffMode/settable",
+            "api_path": "managementPoints[embeddedId=2].onOffMode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/onOffMode/values",
+            "api_path": "managementPoints[embeddedId=2].onOffMode.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/onOffMode/value",
+            "api_path": "managementPoints[embeddedId=2].onOffMode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/powerfulMode/settable",
+            "api_path": "managementPoints[embeddedId=2].powerfulMode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/powerfulMode/values",
+            "api_path": "managementPoints[embeddedId=2].powerfulMode.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/powerfulMode/value",
+            "api_path": "managementPoints[embeddedId=2].powerfulMode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/heatupMode/settable",
+            "api_path": "managementPoints[embeddedId=2].heatupMode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/heatupMode/values",
+            "api_path": "managementPoints[embeddedId=2].heatupMode.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/heatupMode/value",
+            "api_path": "managementPoints[embeddedId=2].heatupMode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/ww/consumptionData/ref",
+            "api_path": "managementPoints[embeddedId=2].consumptionData.ref",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/ww/consumptionData/settable",
+            "api_path": "managementPoints[embeddedId=2].consumptionData.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/ww/consumptionData/value/electrical/heating/d",
+            "api_path": "managementPoints[embeddedId=2].consumptionData.value.electrical.heating.d",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/ww/consumptionData/value/electrical/heating/w",
+            "api_path": "managementPoints[embeddedId=2].consumptionData.value.electrical.heating.w",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/ww/consumptionData/value/electrical/heating/m",
+            "api_path": "managementPoints[embeddedId=2].consumptionData.value.electrical.heating.m",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/energie/ww/consumptionData/value/electrical/unit",
+            "api_path": "managementPoints[embeddedId=2].consumptionData.value.electrical.unit",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/sensoryData/settable",
+            "api_path": "managementPoints[embeddedId=2].sensoryData.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/sensoryData/ref",
+            "api_path": "managementPoints[embeddedId=2].sensoryData.ref",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/sensoryData/value/tankTemperature/settable",
+            "api_path": "managementPoints[embeddedId=2].sensoryData.value.tankTemperature.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/sensoryData/value/tankTemperature/value",
+            "api_path": "managementPoints[embeddedId=2].sensoryData.value.tankTemperature.value",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/temperatureControl/ref",
+            "api_path": "managementPoints[embeddedId=2].temperatureControl.ref",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/temperatureControl/settable",
+            "api_path": "managementPoints[embeddedId=2].temperatureControl.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/temperatureControl/value/operationModes/heating/setpoints/domesticHotWaterTemperature/maxValue",
+            "api_path": "managementPoints[embeddedId=2].temperatureControl.value.operationModes.heating.setpoints.domesticHotWaterTemperature.maxValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/temperatureControl/value/operationModes/heating/setpoints/domesticHotWaterTemperature/minValue",
+            "api_path": "managementPoints[embeddedId=2].temperatureControl.value.operationModes.heating.setpoints.domesticHotWaterTemperature.minValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/temperatureControl/value/operationModes/heating/setpoints/domesticHotWaterTemperature/stepValue",
+            "api_path": "managementPoints[embeddedId=2].temperatureControl.value.operationModes.heating.setpoints.domesticHotWaterTemperature.stepValue",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/temperatureControl/value/operationModes/heating/setpoints/domesticHotWaterTemperature/settable",
+            "api_path": "managementPoints[embeddedId=2].temperatureControl.value.operationModes.heating.setpoints.domesticHotWaterTemperature.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/temperatureControl/value/operationModes/heating/setpoints/domesticHotWaterTemperature/value",
+            "api_path": "managementPoints[embeddedId=2].temperatureControl.value.operationModes.heating.setpoints.domesticHotWaterTemperature.value",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/operationMode/settable",
+            "api_path": "managementPoints[embeddedId=2].operationMode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/operationMode/values",
+            "api_path": "managementPoints[embeddedId=2].operationMode.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/operationMode/value",
+            "api_path": "managementPoints[embeddedId=2].operationMode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/ref",
+            "api_path": "managementPoints[embeddedId=2].schedule.ref",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/settable",
+            "api_path": "managementPoints[embeddedId=2].schedule.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/currentMode/settable",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.currentMode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/currentMode/values",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.currentMode.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/currentMode/value",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.currentMode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/nextAction/operationMode",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.nextAction.operationMode",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/nextAction/startTime",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.nextAction.startTime",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/nextAction/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.nextAction.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/nextAction/actionPeriod",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.nextAction.actionPeriod",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/currentSchedule/settable",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.currentSchedule.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/currentSchedule/values",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.currentSchedule.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/currentSchedule/value",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.currentSchedule.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/enabled/settable",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.enabled.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/enabled/value",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.enabled.value",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/meta/minIntervalBetweenActions",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.meta.minIntervalBetweenActions",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/meta/maxSchedules",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.meta.maxSchedules",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/meta/maxActionsPerActionPeriod",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.meta.maxActionsPerActionPeriod",
+            "type": "number",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/meta/consecutiveActionsAllowed",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.meta.consecutiveActionsAllowed",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/meta/actionTypes/domesticHotWaterTemperature/settable",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.meta.actionTypes.domesticHotWaterTemperature.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/meta/actionTypes/domesticHotWaterTemperature/values",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.meta.actionTypes.domesticHotWaterTemperature.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/meta/enabledIsModeDependent",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.meta.enabledIsModeDependent",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/settable",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/name/value",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.name.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/name/settable",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.name.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/meta/isReadOnly",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.meta.isReadOnly",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/meta/actionPeriods",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.meta.actionPeriods",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/monday/10%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.monday.10:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/monday/18%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.monday.18:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/tuesday/10%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.tuesday.10:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/tuesday/18%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.tuesday.18:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/wednesday/10%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.wednesday.10:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/wednesday/18%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.wednesday.18:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/thursday/10%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.thursday.10:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/thursday/18%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.thursday.18:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/friday/10%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.friday.10:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/friday/18%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.friday.18:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/saturday/10%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.saturday.10:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/saturday/18%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.saturday.18:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/sunday/10%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.sunday.10:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/schedule/value/modes/heating/schedules/0/actions/sunday/18%3A00%3A00/domesticHotWaterTemperature",
+            "api_path": "managementPoints[embeddedId=2].schedule.value.modes.heating.schedules.0.actions.sunday.18:00:00.domesticHotWaterTemperature",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/setpointMode/settable",
+            "api_path": "managementPoints[embeddedId=2].setpointMode.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/setpointMode/values",
+            "api_path": "managementPoints[embeddedId=2].setpointMode.values",
+            "type": "json",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/ww/setpointMode/value",
+            "api_path": "managementPoints[embeddedId=2].setpointMode.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/innengeraet/embeddedId",
+            "api_path": "managementPoints[embeddedId=3].embeddedId",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/innengeraet/managementPointType",
+            "api_path": "managementPoints[embeddedId=3].managementPointType",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/innengeraet/managementPointCategory",
+            "api_path": "managementPoints[embeddedId=3].managementPointCategory",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/innengeraet/modelInfo/settable",
+            "api_path": "managementPoints[embeddedId=3].modelInfo.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/innengeraet/modelInfo/value",
+            "api_path": "managementPoints[embeddedId=3].modelInfo.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/innengeraet/softwareVersion/settable",
+            "api_path": "managementPoints[embeddedId=3].softwareVersion.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/innengeraet/softwareVersion/value",
+            "api_path": "managementPoints[embeddedId=3].softwareVersion.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/aussengeraet/embeddedId",
+            "api_path": "managementPoints[embeddedId=4].embeddedId",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/aussengeraet/managementPointType",
+            "api_path": "managementPoints[embeddedId=4].managementPointType",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/aussengeraet/managementPointCategory",
+            "api_path": "managementPoints[embeddedId=4].managementPointCategory",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/aussengeraet/softwareVersion/settable",
+            "api_path": "managementPoints[embeddedId=4].softwareVersion.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/aussengeraet/softwareVersion/value",
+            "api_path": "managementPoints[embeddedId=4].softwareVersion.value",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/bedienung/embeddedId",
+            "api_path": "managementPoints[embeddedId=5].embeddedId",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/bedienung/managementPointType",
+            "api_path": "managementPoints[embeddedId=5].managementPointType",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/bedienung/managementPointCategory",
+            "api_path": "managementPoints[embeddedId=5].managementPointCategory",
+            "type": "text",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/bedienung/softwareVersion/settable",
+            "api_path": "managementPoints[embeddedId=5].softwareVersion.settable",
+            "type": "bool",
+            "feature_documented": true
+        },
+        {
+            "topic": "Daikin/diagnose/bedienung/softwareVersion/value",
+            "api_path": "managementPoints[embeddedId=5].softwareVersion.value",
+            "type": "text",
+            "feature_documented": true
+        }
+    ]
+}

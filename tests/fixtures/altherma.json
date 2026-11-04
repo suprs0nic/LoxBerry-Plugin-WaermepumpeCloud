@@ -29,6 +29,18 @@
         "isInErrorState": {
           "settable": false,
           "value": false
+        },
+        "serialNumber": {
+          "settable": false,
+          "value": "FIXTURE-SERIAL"
+        },
+        "ipAddress": {
+          "settable": false,
+          "value": "192.0.2.10"
+        },
+        "macAddress": {
+          "settable": false,
+          "value": "02:00:00:00:00:01"
         }
       },
       {
@@ -491,6 +503,11 @@
           "maxValue": 30,
           "minValue": 12,
           "stepValue": 0.5
+        },
+        "name": {
+          "settable": true,
+          "value": "Fixture room",
+          "maxLength": 63
         }
       },
       {
@@ -802,6 +819,11 @@
             "weatherDependent"
           ],
           "value": "fixed"
+        },
+        "name": {
+          "settable": true,
+          "value": "Fixture room",
+          "maxLength": 63
         }
       },
       {
@@ -836,6 +858,10 @@
         }
       }
     ],
-    "id": "fixture-gateway"
+    "id": "fixture-gateway",
+    "_id": "fixture-legacy-id",
+    "type": "heating",
+    "embeddedId": "fixture-device-id",
+    "timestamp": "2026-01-01T00:00:00.000Z"
   }
 ]

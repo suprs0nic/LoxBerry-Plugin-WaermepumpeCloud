@@ -17,7 +17,9 @@ REQUIRED = ('plugin.cfg', 'preinstall.sh', 'postinstall.sh', 'preupgrade.sh', 'p
             'webfrontend/htmlauth/wp_lib.php', 'webfrontend/htmlauth/wp_onecta_extended.php',
             'webfrontend/htmlauth/wp_onecta_limits.php',
             'webfrontend/htmlauth/wp_onecta_energy.php',
-            'webfrontend/htmlauth/wp_onecta_extended_ui.php', 'config/mqtt_subscriptions.cfg')
+            'webfrontend/htmlauth/wp_daikin.php',
+            'webfrontend/htmlauth/wp_daikin_loxone.php',
+            'webfrontend/htmlauth/wp_daikin_ui.php', 'config/mqtt_subscriptions.cfg')
 
 
 def verify(path):
@@ -59,7 +61,7 @@ def build(output=None):
             data = path.read_bytes()
             if path.suffix in ('.php', '.sh', '.cfg', '.md', '.json', '.txt') or rel.startswith(('cron/', 'uninstall/')):
                 data = data.replace(b'\r\n', b'\n')
-            info = zipfile.ZipInfo(prefix + rel, (2026, 11, 2, 0, 0, 0))
+            info = zipfile.ZipInfo(prefix + rel, (2026, 11, 4, 0, 0, 0))
             info.create_system = 3
             executable = path.suffix == '.sh' or rel.startswith(('bin/', 'cron/', 'uninstall/'))
             info.external_attr = (stat.S_IFREG | (0o755 if executable else 0o644)) << 16
